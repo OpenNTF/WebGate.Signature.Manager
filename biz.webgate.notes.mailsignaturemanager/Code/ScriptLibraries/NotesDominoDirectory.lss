@@ -1,0 +1,91 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Public
+Option Declare
+
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Class NotesDominoDirectory
+Declare Sub Initialize
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+Class NotesDominoDirectory
+ 
+	Private strServer As String
+ 
+	Public Sub New (server As String )
+		strServer = server
+	End Sub
+ 
+	Public Function ExplodeGroup (GroupName As String) As Variant
+ 
+		Dim s As New NotesSession
+		Dim db As New NotesDatabase ( Me.strServer, "names.nsf" )
+		Dim doc As NotesDocument
+		Dim view As NotesView
+		Dim i As Integer, j As Integer, k As Integer
+		Dim arrGrp1, arrGrp2 As Variant
+ 
+		Set view=Db.GetView ("($VIMGroups)")
+		Set doc=View.GetDocumentByKey (GroupName)
+		ReDim arrMembers (1) As Variant
+		j = 0
+ 
+		If Not (doc Is Nothing) Then
+			arrGrp1= Doc.GetItemValue ("Members")
+			For i= 0 To UBound (arrGrp1)
+				arrGrp2= Me.ExplodeGroup (arrGrp1 (i))
+				ReDim Preserve arrMembers (UBound (arrGrp2) + j) As Variant
+				For k= 0  To UBound (arrGrp2)
+					arrMembers (j) = arrGrp2 (k)
+					j = j + 1
+				Next
+			Next
+		Else
+			ReDim arrMembers (0) As Variant
+			arrMembers (0) = GroupName
+		End If
+ 
+		ExplodeGroup= ArrayUnique (arrMembers)
+ 
+	End Function 
+ 
+	Public Function IsGroupMember ( strGroup As String, strUser As String ) As Boolean
+ 
+		IsGroupMember = False
+ 
+		If (ArrayGetIndex (Me.ExplodeGroup (strGroup), strUser , 5))  Then
+			IsGroupMember = True
+		End If
+ 
+	End Function
+ 
+	Public Function IsGroupMemberExt ( strGroup As String, strUser As String ) As Boolean
+		' uses undocumented function
+		Dim arrMembers As Variant
+		IsGroupMemberExt = False
+		arrMembers = Evaluate(|@ExpandNameList("|& strServer & |":"names.nsf";"|& strGroup &|")| )
+		If (ArrayGetIndex ( arrMembers, strUser, 5)) Then
+			IsGroupMemberExt = True
+		End If
+	End Function
+ 
+End Class
+'++LotusScript Development Environment:2:2:Initialize:1:10
+Sub Initialize
+	
+%REM
+	Sub Click(Source As Button)
+		Dim res As Variant
+		Dim dd As New NotesDominoDirectory ("serv01/singultus")
+
+		'check if is member
+		Msgbox dd.IsGroupMember ( "Everybody" , "CN=Ulrich Krause/O=singultus")
+		
+		'explode whole group		
+		res = dd.ExplodeGroup ("LocalDomainAdmins")
+	End Sub
+		
+%END REM
+	
+End Sub
+

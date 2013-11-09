@@ -1,0 +1,184 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Public
+Option Declare
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class ProductInfoSM
+Declare Private Function decryptHash(mykey As String, myBase As String) As String
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+Const CON_VERSION_MAJOR = 2
+'Const CON_VERSION_MINOR = 1
+'Const CON_VERION_BUILD = 201103190001
+'Const CON_VERION_STRING = "2.1 BETA 3"
+Const CON_VERSION_MINOR = 2
+Const CON_VERION_BUILD = 201108100001
+Const CON_VERION_STRING = "2.2.5"
+Const CON_PRODUCT_NAME = "Signature Manager"
+Public Class ProductInfoSM
+	
+	Private m_ValidDate As String
+	Private m_Count As Long
+	Private m_IsDemo As Boolean
+	Private m_ndbCurrent As NotesDatabase
+	Private m_StatusMsg As String
+	
+	Sub New( ndbCurrent As NotesDatabase, strKey As String)
+
+		Dim arrKeyPart As Variant
+		Dim strBase As String
+		Dim strDec As String
+		Dim arrDECPart As Variant
+		Dim strNumbPart As String
+		m_Count = -1
+		m_ValidDate = ""
+		m_IsDemo = True
+		m_StatusMsg = "Falscher Key für dieses Produkt"
+		
+		Set m_ndbCurrent = ndbCurrent
+		
+		arrKeyPart = Split(strKey,"-")
+		If UBound(arrKeyPart) < 1 Then
+			Call processProfile()
+			Exit sub
+		End If
+		If arrKeyPart(0) <> "7001" Then
+			m_StatusMsg = "Falscher Key für dieses Produkt"
+			Call processProfile()
+		End If
+		strBase = "IKFUUMIURQOQRBUIOSVKLWNURMDHUMHAHKCQSFPPSSGXBWTJLNLPJVNBVJEFNOPTSNRCUICVBMIWTRFKGPMYFEMQBCQEGKWDDXBMXLLLGRWXAHUDNXVLORPPFHPAPGJT"
+		strDec = decryptHash(arrKeyPart(1),strBase)
+		arrDecPart = Split(strDec,"-")
+		if UBound(arrDecPart) < 2 Then
+			m_StatusMsg = "Ungültiger Schlüssel: Error 1001"
+			Call processProfile()
+			Exit Sub		
+		End if
+		If ndbCurrent.ReplicaID <> FullTrim(arrDecPart(0)) Then
+			m_StatusMsg = "Ungültiger Schlüssel: Error 1002"
+			Call processProfile()
+			Exit sub
+		End If
+		Dim arrDate As Variant
+		m_ValidDate = arrDecPart(1)
+		arrDate = Split (m_ValidDate, ".")
+		If UBound(arrDate) < 2 Then
+			m_ValidDate = ""
+		End If
+		If isNumeric(arrDate(0)) And IsNumeric(arrDate(1)) And IsNumeric(arrdate(2)) Then
+			m_ValidDate = DateNumber(arrDate(2), arrDate(1), arrDate(0))
+		Else
+			m_ValidDate = ""
+		End If
+		
+		If IsDate(m_ValidDate) = False Then
+			m_StatusMsg = "Ungültiger Schlüssel: Error 1003"
+			Call processProfile()						
+			Exit sub
+		End If
+		strNumbPart = arrDecPart(2)
+		strNumbPart = Replace(strNumbPart,"#","")
+		If IsNumeric ( strNumbPart ) = False Then
+			m_StatusMsg = "Ungültiger Schlüssel: Error 1004"
+			Call processProfile()
+			Exit sub			
+		End If
+		m_Count = CLng( strNumbPart)
+		If cdat ( m_ValidDate) < Today Then
+			m_StatusMsg = "Die Lizenz ist abgelaufen"
+			Call processProfile()			
+		End If
+		m_IsDemo = False
+		m_StatusMsg = "Die Lizenz ist gültig"
+		Call processProfile()
+	End Sub
+	
+	Private Sub processProfile()
+		Dim docProfile As NotesDocument
+		Set docProfile = m_ndbCurrent.Getprofiledocument("ProductInfo")
+		docProfile.VersionMajor = Con_version_major
+		docProfile.VersionMinor = Con_version_minor
+		docProfile.VersionBuild = Con_verion_build
+		docProfile.VersionString = CON_VERION_STRING
+		docProfile.ValidDate = m_ValidDate
+		docProfile.StatusMsg = m_StatusMsg
+		docProfile.SignatureCount = m_Count
+		docProfile.fdWGCProductName = CON_PRODUCT_NAME
+		If (m_IsDemo) then
+			docProfile.IsDemo = "DEMO"
+		Else
+			docProfile.IsDemo = ""
+		End If
+		Call docProfile.save(True,False,True)	
+	End Sub
+	
+	Public Function getCount As Long
+		getCount = m_Count
+	End Function
+	
+	Public Function getUnusedCount As Long
+		On Error GoTo ErrorHandler
+		Dim viwSignature As NotesView
+		Dim nvcCurrent As NotesViewEntryCollection
+		Set viwSignature = m_ndbCurrent.Getview("LUPSignatureActive")
+		Set nvcCurrent = viwSignature.Allentries
+		
+		getUnusedCount = m_Count - nvcCurrent.Count
+		Exit Function
+errorHandler:
+		Print "Error: " & Error & " at line: " & Erl
+		getUnusedCount = 0
+		Exit function
+	End Function
+End Class
+'++LotusScript Development Environment:2:1:decryptHash:1:8
+Private Function decryptHash(mykey As String, myBase As String) As String
+	On Error GoTo wtf
+	Dim dbl As Integer
+	Dim out As String
+	
+	Dim pk As String
+	Dim crc As Integer
+	Dim crccount As Long
+	Dim thiscrc As Long
+	Dim i As Long
+	Dim ascint As Integer
+	Dim crcint As Integer
+	Dim bcount As Integer
+	Dim pkpos As Integer
+	
+	pk = myBase
+	dbl = 1  ' double step for hex pairs
+	bcount = 1 ' byte counter for crc
+	pkpos = 1 
+	
+	For i=1 To Len(mykey)/2
+		If bcount < 9 Then
+			ascint = CInt(Val("&h" & Mid(mykey,dbl,2)))
+			out =	out & Chr(  ascint - Asc(Mid(pk,pkpos,1)) )
+'			crc = crc + Cbyte(ascint - Asc(Mid(pk,pkpos,1)))		'// ouch, cbyte not available in R5
+			crc = crc + ascint - Asc(Mid(pk,pkpos,1))
+			pkpos = pkpos + 1
+		Else			' // checksum fragment
+			crcint = CInt(Val("&h" & Mid(mykey,dbl,2)))
+			thiscrc = crc - (Fix(crc /256) * 256)
+			If CStr(crcint) <> CStr(thiscrc) Then
+'				Print "CRC Failed"
+				decryptHash = "CRCFAIL"
+				Exit Function
+			End If
+			crc = 0		' reset
+			bcount = 0 ' reset
+		End If
+		dbl = dbl + 2
+		bcount = bcount + 1
+	Next
+	
+	decryptHash = out
+	Exit Function
+wtf:
+	Print "decryptHash: ERROR " & Err & " at line " & Str$(Erl) & ": " & Error$
+	decryptHash = "ERROR"
+	Exit Function
+End Function
+

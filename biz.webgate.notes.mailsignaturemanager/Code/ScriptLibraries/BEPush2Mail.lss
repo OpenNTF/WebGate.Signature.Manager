@@ -1,0 +1,930 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Public
+Option Declare
+Use "WGCLogIncubinator"
+Use "SignaturFactory"
+Use "libAPIContainer"
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Private Sub checkCalendarProfile( docCurrent As NotesDocument, docDXL As NotesDocument, ndbMail As NotesDatabase)
+Declare Private Sub recompileNewForm( sesCurrent As NotesSession, ndbMail As NotesDatabase )
+Declare Private Function isContentIdentical (docMailProfile As NotesDocument, docCurrent As NotesDocument) As Boolean
+Declare Private Function fixRefresh (ndbMail As NotesDatabase) As Boolean
+Declare Private Sub makeBackupXML ( docDOM As NotesDOMDocumentNode )
+Declare Private Sub transformXMLFile(sesCurrent As NotesSession, strFile As String, action As String)	
+Declare Private Sub reactivateBackupXML ( docDOM As NotesDOMDocumentNode )
+Declare Private Function zzzGetDesignUpdateDefinition ( db As NotesDatabase ) As NotesDocument
+Declare Private Sub pushSignatureContent ( docSignature As NotesDocument, sesCurrent As NotesSession, ndbMail As NotesDatabase )	
+Declare Sub launchProcess ( docSignature As NotesDocument, sesCurrent As NotesSession )
+Declare Private Sub designRefresh( docDXL As NotesDocument, ndbMail As NotesDatabase)
+Declare Private Function zzzGetVersionField ( db As NotesDatabase ) As NotesDocument
+Declare Private Function getFormVersion (ndbMail As NotesDatabase) As string
+Declare Private Sub importNewForm( sesCurrent As NotesSession, ndbMail As NotesDatabase, docDXL As NotesDocument, strFile As String, action As String)
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+Dim strSeparator As String
+Dim version As String
+Dim language As String
+Dim logStart As String
+Dim action As String
+
+'++LotusScript Development Environment:2:2:checkCalendarProfile:1:8
+Private Sub checkCalendarProfile( docCurrent As NotesDocument, docDXL As NotesDocument, ndbMail As NotesDatabase)
+	On Error GoTo ErrorHandler
+	
+	Call WGCLI_LogEvent(logStart + " - start routine 'checkCalendarProfile'" , 1, 3, Nothing)
+	
+	Dim sesCurrent As NotesSession
+	Dim streamCurrent As NotesStream
+	Dim dxlExporter As NotesDXLExporter
+	Dim nnCCurrent As NotesNoteCollection
+	Dim frmCalendarProfile As NotesForm
+	Dim frmCPBackup As NotesForm
+	Dim docForm As NotesDocument
+	Dim backup As String
+	Dim strID As String
+	Dim strPath As String
+	Dim noteid As String
+	
+	Dim setCurrent As Setup
+	
+	'check for calendar profile design document
+	Set frmCalendarProfile = ndbMail.Getform("CalendarProfile")
+	Set sesCurrent = ndbMail.Parent
+	Set setCurrent = New Setup(sesCurrent)
+	
+	If (frmCalendarProfile Is Nothing) Then
+		Call WGCLI_LogEvent(logStart + " - No CalendarProfile found" , 0, 0, Nothing)
+		Exit Sub
+	End If
+	
+	Set frmCPBackup = ndbMail.Getform("CalendarProfile.backup")
+	
+	If (action = "push") Then
+		If Not (frmCPBackup Is Nothing) Then
+			'signature is active and backup exists => nothing to do			
+			Exit Sub
+		Else
+			'signature is active but no backup found => push DXL			
+			Call WGCLI_LogEvent(logStart + " - pushing new Calendar Profile DXL" , 0, 0, Nothing)			
+		End If
+	ElseIf (action = "reset") Then
+		If Not (frmCPBackup Is Nothing) Then
+			'signature is inactive => reset to original Calendar Profile
+			Call WGCLI_LogEvent(logStart + " - reverting to original Calendar Profile DXL" , 0, 0, Nothing)
+			backup = ".backup"
+			
+			'remove customised Calendar Profile
+			Call frmCalendarProfile.Remove()			
+		Else
+			'signature Is inactive and no backup found => nothing to do
+			Exit Sub
+		End If
+	End If
+	
+	'file path separator based on operating system
+	If InStr(1,LCase(sesCurrent.Platform), "windows") > 0 Then
+		strSeparator = "\"
+	Else
+		strSeparator = "/"
+	End If
+	
+	'get form to manipulate
+	Set nncCurrent = ndbMail.CreateNoteCollection(False)
+	nnCCurrent.SelectForms = True
+	Call nnCCurrent.BuildCollection()
+	
+	strID = nncCurrent.GetFirstNoteID()
+	While strID <> ""
+		Set docForm = ndbMail.GetDocumentByID(strID)
+		'if 'backup' is empty then action = push, else action = "reset"
+		If InStr(1,Implode(docForm.GetItemValue("$Title"),"|"),"CalendarProfile" + backup) > 0 Then
+			strID = ""
+		Else
+			strID = nncCurrent.GetNextNoteID(strID)
+		End If
+	Wend
+	Set nncCurrent = Nothing
+	
+	If docForm Is Nothing Then Exit Sub		'no form to manipulate found
+	
+	Set streamCurrent = sesCurrent.createStream()
+	strPath = sesCurrent.GetEnvironmentString("Directory", True) +  strSeparator +"tmpCP.dxl" 
+	If Not (streamCurrent.Open(strPath)) Then
+		Exit Sub
+	End If
+	Call streamCurrent.Truncate
+	
+	'export original/backup Calendar Profile
+	Set dxlExporter = sesCurrent.CreateDXLExporter
+	Call dxlExporter.SetInput(docForm)			'form to be exported
+	Call dxlExporter.SetOutput(streamCurrent)	'file to be created
+	Call dxlExporter.Process
+	Call streamCurrent.Close()
+	
+	Call transformXMLFile(sesCurrent, strPath, action)
+	
+	Call importNewForm(sesCurrent, ndbMail, docDXL, strPath, action)
+	
+'	If setCurrent.recompileDesign() = 1 Then
+'		Call recompileNewForm( sesCurrent, ndbMail)
+'	End If
+	
+	If action <> "push" Then
+		'remove old backup copy of calendar profile
+		Call docForm.Remove ( True )
+	End If
+	
+	If setCurrent.getSignMail() = 1 Then
+		'create adminp request for database signing
+		Dim adminp As NotesAdministrationProcess
+		
+		Set adminp = sesCurrent.CreateAdministrationProcess( ndbMail.Server ) 
+		noteid = adminp.SignDatabaseWithServerID( ndbMail.Server, ndbMail.FilePath )
+		If noteid = "" Then
+			Call WGCLI_LogEvent("Could not create adminp request" , 0, 0, Nothing)
+		End If
+	End If
+	
+cleanup:
+	Kill strPath 
+	Kill strPath +".backup.dxl"
+	If backup = "" Then
+		Kill strPath +".import.dxl"
+	End If
+	
+	Exit Sub
+ErrorHandler:
+	Call WGCLI_LogError("Error in checkCalendarProfile (" & CStr(Erl) & ")", docCurrent)
+	Exit Sub
+End Sub
+
+'++LotusScript Development Environment:2:2:recompileNewForm:1:8
+Private Sub recompileNewForm( sesCurrent As NotesSession, ndbMail As NotesDatabase )
+	On Error GoTo ErrorHandler
+	
+	Call WGCLI_LogEvent(logStart + " - start routine 'recompileNewForm'" , 1, 3, Nothing)
+	
+	Dim nnCCurrent As NotesNoteCollection
+	Dim docForm As NotesDocument
+	Dim sTitleU As String
+	
+	Dim recompiler As New LotusScriptRecompiler
+	Call recompiler.OpenDatabase(ndbMail)
+	
+	Set nncCurrent = ndbMail.Createnotecollection(False)
+	nnCCurrent.Selectforms = True
+	Call nnCCurrent.Buildcollection()
+	
+	Dim noteID As String
+	noteID = nnCCurrent.GetFirstNoteId
+	Do Until (noteID = "")
+		Set docForm = ndbMail.GetDocumentByID(noteID)
+		sTitleU = UCase(recompiler.GetTitle(docForm))
+		
+		If InStr(1,Implode(docForm.Getitemvalue("$Title"),"|"),"CalendarProfile") > 0 And InStr(1,Implode(docForm.Getitemvalue("$Title"),"|"),"CalendarProfile.backup") = 0 Then
+			If recompiler.RecompileLSByNoteID(noteID) Then
+				Call WGCLI_LogEvent("Successfully recompiled Calendar Profile on " & sesCurrent.Platform, 0, 0, Nothing)
+			Else
+				Call WGCLI_LogError(recompiler.GetLastError, Nothing)
+				Exit Sub
+			End If				
+		End If
+		
+		noteID = nnCCurrent.GetNextNoteId(noteID)
+	Loop
+	Call recompiler.CloseDatabase()
+	Exit Sub
+ErrorHandler:
+	
+	Call WGCLI_LogError("recompileNewForm (" & CStr(Erl) & ")", Nothing)
+	Exit Sub	
+End Sub
+
+'++LotusScript Development Environment:2:1:isContentIdentical:1:8
+Private Function isContentIdentical (docMailProfile As NotesDocument, docCurrent As NotesDocument) As Boolean
+	On Error GoTo errorHandling
+	
+	isContentIdentical = True
+	
+	Dim docTempSM As NotesDocument
+	Dim docTempMail As NotesDocument
+	Dim rtitemSource As NotesRichTextItem
+	Dim rtitemTarget As NotesRichTextItem
+	
+	Set docTempSM = docCurrent.ParentDatabase.createDocument
+	Set rtitemSource = docCurrent.getFirstItem("Signatur_Rich")
+	Set rtitemTarget = rtitemSource.copyitemtodocument(docTempSM, "Signatur")
+	
+	Set docTempMail = docCurrent.ParentDatabase.createDocument
+	Set rtitemSource = docMailProfile.getFirstItem("Signature_Rich")
+	Set rtitemTarget = rtitemSource.copyitemtodocument(docTempMail, "Signatur")
+	
+	If docTempSM.Size <> docTempMail.Size Then
+		isContentIdentical = False
+	End If
+	
+	Exit Function
+errorHandling:
+	Exit Function
+End Function
+
+'++LotusScript Development Environment:2:1:fixRefresh:1:8
+Private Function fixRefresh (ndbMail As NotesDatabase) As Boolean
+	On Error GoTo ErrorHandler
+	
+	Call WGCLI_LogEvent(logStart + " - start routine 'fixRefresh'" , 1, 3, Nothing)
+	
+	Dim sesCurrent As NotesSession
+	Dim ndbCurrent As NotesDatabase
+	Dim nncCurrent As NotesNoteCollection
+	Dim docForm As NotesDocument
+	Dim docTarget As NotesDocument
+	Dim frmBackup As NotesForm
+	Dim strID As String
+	
+	Set sesCurrent = ndbMail.Parent
+	
+	'delete both, old backup and modified calendar profile 
+	Set frmBackup = ndbMail.getForm("CalendarProfile.backup")
+	If Not frmBackup Is Nothing Then
+		Call frmBackup.Remove()
+	End If
+	Set frmBackup = ndbMail.getForm("CalendarProfile")
+	If Not frmBackup Is Nothing Then
+		Call frmBackup.Remove()
+	End If
+	
+	'copy new backup
+	Set ndbCurrent = sesCurrent.CurrentDatabase	
+	Set nncCurrent = ndbCurrent.CreateNoteCollection(False)
+	nnCCurrent.SelectForms = True
+	Call nnCCurrent.BuildCollection()
+	
+	strID = nncCurrent.GetFirstNoteID()
+	While strID <> ""
+		Set docForm = ndbCurrent.GetDocumentByID(strID)
+		If InStr(1,Implode(docForm.GetItemValue("$Title"),"|"),"(Calendar Profile " + version + " " + language + ")") > 0 Then
+			strID = ""
+		Else
+			strID = nncCurrent.GetNextNoteID(strID)
+		End If
+	Wend
+	Set nncCurrent = Nothing
+	
+	If docForm Is Nothing Then 
+		Exit Function		'no form to manipulate found
+	End If
+	
+	Set docTarget = docForm.CopyToDatabase(ndbMail)
+	
+	'rename it to original name
+	Dim arr(1) As String
+	arr(0) = "(Calendar Profile)"
+	arr(1) = "CalendarProfile"
+	Call docTarget.ReplaceItemValue("$TITLE", arr)
+	Call docTarget.save ( True, False, True )
+	
+	Exit Function
+ErrorHandler:
+	Call WGCLI_LogError("Error in fixRefresh (" & CStr(Erl) & ")", Nothing)
+	Exit Function
+End Function
+
+'++LotusScript Development Environment:2:2:makeBackupXML:1:8
+Private Sub makeBackupXML ( docDOM As NotesDOMDocumentNode )
+	On Error GoTo ErrorHandler
+	
+	Call WGCLI_LogEvent(logStart + " - start routine 'makeBackupXML'" , 1, 3, Nothing)
+	
+	Dim ndList As NotesDOMNodeList
+	Dim ndListNI As NotesDOMNodeList
+	Dim nodeCurrent As NotesDOMNode
+	Dim nodeInfo As NotesDOMNode
+	Dim nodeElement As NotesDOMElementNode
+	Dim attrList As NotesDOMNamedNodeMap
+	Dim attrValue As NotesDOMNode
+	Dim nCounter As Long
+	Dim nCounter2 As Long
+	Set ndList = docDom.Getelementsbytagname("form")
+	
+	For nCounter = 1 To ndList.Numberofentries 
+		Set nodeCurrent = ndList.Getitem(nCounter)
+		Set nodeElement = nodeCurrent
+		Call nodeElement.Setattribute("name", "(Calendar Profile BACKUP WGC)")
+		Call nodeElement.Setattribute("alias", "CalendarProfile.backup")
+		Call nodeElement.Setattribute("noreplace","true")
+		Set ndListNI = nodeElement.Getelementsbytagname("noteinfo")
+		If ndListNI.Numberofentries > 0 Then
+			Set nodeInfo = ndListNI.Getitem(1)
+			Call nodeElement.Removechild(nodeInfo)
+		End If
+	Next
+	
+	Exit Sub
+ErrorHandler:
+	Call WGCLI_LogError("Error in makeBackupXML (" & CStr(Erl) & ")", Nothing)
+	Exit Sub
+End Sub
+
+'++LotusScript Development Environment:2:2:transformXMLFile:1:8
+Private Sub transformXMLFile(sesCurrent As NotesSession, strFile As String, action As String)	
+	On Error GoTo ErrorHandler
+	
+	Call WGCLI_LogEvent(logStart + " - start routine 'transformXMLFile'" , 1, 3, Nothing)
+	
+	Dim streamInput As NotesStream
+	Dim streamOutput As NotesStream
+	Dim parser As NotesDOMParser
+	
+	Set streamInput = sesCurrent.CreateStream()
+	Set streamOutput = sesCurrent.CreateStream()
+	
+	Call streamInput.Open(strFile)
+	Call streamOutput.Open(strFile +".backup.dxl")
+	
+	Call streamOutput.Truncate()
+	
+	Set parser = sesCurrent.CreateDomParser(streamInput, streamOutput)
+	Call parser.Process()
+	
+	If action = "push" Then
+		Call makeBackupXML(parser.Document)
+	Else
+		Call reactivateBackupXML(parser.Document)
+	End If
+	
+	Call parser.Serialize()
+	Call streamInput.Close()
+	Call streamOutput.Close()
+	
+	Exit Sub
+ErrorHandler:
+	Call WGCLI_LogError("Error in transformXMLFile (" & CStr(Erl) & ")", Nothing)
+	Exit Sub
+End Sub
+
+'++LotusScript Development Environment:2:2:reactivateBackupXML:1:8
+Private Sub reactivateBackupXML ( docDOM As NotesDOMDocumentNode )
+	On Error GoTo ErrorHandler
+	
+	Call WGCLI_LogEvent(logStart + " - start routine 'reactivateBackupXML'" , 1, 3, Nothing)
+	
+	Dim ndList As NotesDOMNodeList
+	Dim ndListNI As NotesDOMNodeList
+	Dim nodeCurrent As NotesDOMNode
+	Dim nodeInfo As NotesDOMNode
+	Dim nodeElement As NotesDOMElementNode
+	Dim attrList As NotesDOMNamedNodeMap
+	Dim attrValue As NotesDOMNode
+	Dim nCounter As Long
+	Dim nCounter2 As Long
+	Set ndList = docDom.Getelementsbytagname("form")
+	
+	For nCounter = 1 To ndList.Numberofentries 
+		Set nodeCurrent = ndList.Getitem(nCounter)
+		Set nodeElement = nodeCurrent
+		Call nodeElement.Setattribute("name", "(Calendar Profile)")
+		Call nodeElement.Setattribute("alias", "CalendarProfile")
+		Call nodeElement.Setattribute("noreplace","false")
+		Set ndListNI = nodeElement.Getelementsbytagname("noteinfo")
+		If ndListNI.Numberofentries > 0 Then
+			Set nodeInfo = ndListNI.Getitem(1)
+			Call nodeElement.Removechild(nodeInfo)
+		End If
+	Next
+	
+	Exit Sub
+ErrorHandler:
+	Call WGCLI_LogError("Error in reactivateBackupXML (" & CStr(Erl) & ")", Nothing)
+	Exit Sub
+End Sub
+
+'++LotusScript Development Environment:2:1:zzzGetDesignUpdateDefinition:1:8
+Private Function zzzGetDesignUpdateDefinition ( db As NotesDatabase ) As NotesDocument
+	
+	Dim sesCurrent As NotesSession
+	Dim vwDXL As NotesView
+	Dim docDXL As NotesDocument
+	Dim key As String
+	
+	Set sesCurrent = db.Parent
+	
+	Set vwDXL = sesCurrent.CurrentDatabase.GetView ("LUPDXLImport")
+	key = version + "###" + language		
+	Set docDXL = vwDXL.GetDocumentByKey ( key, True )
+	If docDXL Is Nothing Then
+		Set zzzGetDesignUpdateDefinition = Nothing
+		
+		Call WGCLI_LogEvent(logStart + " - no DXL Import Definition for this version: " & key , 2, 0, Nothing)
+		Exit Function
+	End If
+	
+	Set zzzGetDesignUpdateDefinition = docDXL
+	
+End Function
+
+'++LotusScript Development Environment:2:2:pushSignatureContent:1:8
+Private Sub pushSignatureContent ( docSignature As NotesDocument, sesCurrent As NotesSession, ndbMail As NotesDatabase )	
+	On Error GoTo errorhandling
+	
+	Call WGCLI_LogEvent(logStart + " - start routine 'pushSignatureContent' - " & action , 1, 3, Nothing)
+	
+	Dim docMailProfile As NotesDocument
+	Dim docDwaProfile As NotesDocument
+	Dim rtitem As NotesRichTextItem
+	Dim rtitem2 As NotesRichTextItem
+	Dim rtiProfile As NotesRichTextItem
+	Dim strSignatur As String
+	Dim toSave As Boolean
+	
+	Set docMailProfile = ndbMail.GetProfileDocument("CalendarProfile")
+	Set docDwaProfile = ndbMail.GetProfileDocument("iNotesProfile")
+	
+	toSave = True		'only save the CalendarProfile if there are changes in the signature
+	
+	If (action = "push") Then		
+		strSignatur = docSignature.Signatur(0)
+		
+		If Left(version,3) = "8.5" Or Left(version,1) = "9" Then	'04.2013, MBA: added support for LN9
+			'Post Notes 8.5 Rich Text Signatur
+			
+			Set rtiProfile = docMailProfile.getFirstItem("Signature_Rich")
+			Set rtitem = docSignature.GetFirstItem ( "Signatur_Rich" )
+			
+			If rtiProfile Is Nothing Then
+				'old LN7 Signature Profile Document => first time push
+				Set rtitem2 = rtitem.Copyitemtodocument(docMailProfile, "Signature_Rich")				
+				docMailProfile.SignatureOption = "3"		'activate Rich Text Signature				
+				docMailProfile.Signature_1 = strSignatur
+				docMailProfile.Signature = strSignatur
+				
+				'update iNotes Profile
+				Call docDwaProfile.ReplaceItemValue("HTMLSignature", strSignatur)
+				Call docDwaProfile.ReplaceItemValue("SignatureType", "2")
+				Call docDwaProfile.save ( True, False, True )
+				'elseIf docSignature.ForceUpdate(0) = "1" Or (rtiProfile.Values <> rtitem.Values or rtiProfile.Valuelength <> rtitem.Valuelength) Then
+			ElseIf docSignature.ForceUpdate(0) = "1" Or isContentIdentical(docMailProfile, docSignature) = False Then
+				If docSignature.ForceUpdate(0) = "1" Then
+					Call WGCLI_LogEvent(logStart + " - Enforced push or change in footer" , 1, 3, Nothing)
+				Else
+					Call WGCLI_LogEvent(logStart + " - Change in signature" , 1, 3, Nothing)	
+				End If
+				
+				Call docMailProfile.Removeitem("Signature_Rich")
+				Set rtitem2 = rtitem.Copyitemtodocument(docMailProfile, "Signature_Rich")				
+				docMailProfile.SignatureOption = "3"		'activate Rich Text Signature				
+				docMailProfile.Signature_1 = strSignatur
+				docMailProfile.Signature = strSignatur
+				
+				'update iNotes Profile
+				Call docDwaProfile.ReplaceItemValue("HTMLSignature", strSignatur)
+				Call docDwaProfile.ReplaceItemValue("SignatureType", "2")
+				Call docDwaProfile.save ( True, False, True )
+			Else
+				'Print "Value and Size identical => no change"
+				toSave = False
+			End If			
+		Else		'if not 8.5.x
+			If docSignature.ForceUpdate(0) = "1" Or (strSignatur <> docMailProfile.Signature(0)) Then
+				docMailProfile.SignatureOption = "1"		'activate Plain Text Signature				
+				docMailProfile.Signature_1 = strSignatur
+				docMailProfile.Signature = strSignatur
+			Else
+				toSave = False
+			End If			
+		End If
+		
+		If toSave = True Then
+			'only if changed
+			If (docSignature.Automatically(0) = "1") Then
+				docMailProfile.EnableSignature = "1"
+			Else
+				docMailProfile.EnableSignature = ""
+			End If
+			
+			Call docMailProfile.ComputeWithForm ( False, False )
+			Call docMailProfile.Save(True, False, True)
+			
+			If docSignature.ForceUpdate(0) = "1" Then
+				Call WGCLI_LogEvent(logStart + " - change in footer or manual signature content update" , 0, 0, Nothing)
+			Else
+				Call WGCLI_LogEvent(logStart + " - updated signature content" , 0, 0, Nothing)
+			End If
+			docSignature.LastPush = Now
+		Else
+			Call WGCLI_LogEvent(logStart + " - no changes in signature, no update" , 0, 0, Nothing)
+		End If
+		
+	ElseIf (action = "reset") Then
+		
+		docMailProfile.EnableSignature = ""
+		docMailProfile.Signature_1 = ""
+		docMailProfile.Signature = ""
+		
+		If Left(version,3) = "8.5" Then
+			'Post Notes 8.5 Rich Text Signatur
+			'remove formatted richtext signature
+			Call docMailProfile.RemoveItem("Signature_Rich")
+			'create a new blank richtext field to prevent user from getting "enter signature" dialog
+			Set rtitem2 = New NotesRichTextItem(docMailProfile, "Signature_Rich")
+			
+			docMailProfile.SignatureOption = "3"		'activate Rich Text Signature
+			
+			'update iNotes Profile
+			Call docDwaProfile.ReplaceItemValue("HTMLSignature", "")
+			Call docDwaProfile.ReplaceItemValue("SignatureType", "2")
+			Call docDwaProfile.save ( True, False, True )
+		Else	'if not 8.5.x
+			docMailProfile.SignatureOption = "1"		'activate Plain Text Signature
+		End If
+		
+		Call docMailProfile.ComputeWithForm ( False, False )
+		Call docMailProfile.Save(True, False, True)
+		
+		Call WGCLI_LogEvent(logStart + " - reset signature content" , 0, 0, Nothing)
+		docSignature.LastPush = Now
+	End If
+	
+	Exit Sub
+	
+errorhandling:
+	Call WGCLI_LogError("Error in pushSignatureContent (" & CStr(Erl) & ")", docSignature)
+	Exit Sub	
+End Sub
+
+'++LotusScript Development Environment:2:2:launchProcess:1:8
+Sub launchProcess ( docSignature As NotesDocument, sesCurrent As NotesSession )
+	On Error GoTo errorhandling
+	
+	Dim ndbMail As NotesDatabase
+	Dim docDXL As NotesDocument
+	Dim docVersion As NotesDocument
+	Dim frmCPBackup As NotesForm
+	Dim curDesign As String
+	Dim FormVersion As String
+	Dim FormLanguage As String
+	Dim dbSize As Double
+	Dim dbQuota As Double
+	
+	'check for mail file availability
+	Set ndbMail = sesCurrent.GetDatabase(docSignature.MailServer(0),docSignature.MailFile(0))
+	If Not ndbMail.IsOpen Then				
+		docSignature.Status = "1"
+		docSignature.transmit = "0"
+		docSignature.transmitReason = "Mail File not accessible"
+		docSignature.NotFound = "1"
+		Call WGCLI_LogError(docSignature.Fullname(0) & ": Mail File not accessible", docSignature)
+		Call docSignature.Save(True, False, True)
+		Exit Sub
+	End If
+	
+	Set docVersion = zzzGetVersionField ( ndbMail )
+	version = docVersion.~$TemplateBuild(0)
+	language = UCase(docVersion.~$Language(0))
+	logStart = ndbMail.Title + " (" + version + " " + language + ")"
+	
+	'go ahead with design update
+	
+	Set docDXL = zzzGetDesignUpdateDefinition ( docSignature.ParentDatabase )
+	If docDXL Is Nothing Then
+		Exit Sub
+	End If
+	
+	'define action to take
+	If (docSignature.Status(0) = "0") Then
+		'active => check if mail template has changed
+		
+		'get version and language of the CalendarProfile form
+		'and compare it to the version and language stored in the sigman document
+		If docDXL.Strategy(0) = "DXL" Then	
+			Call WGCLI_LogEvent(logStart + " - DXL Strategy" , 1, 3, Nothing)
+			curDesign = getFormVersion ( ndbMail )	
+			FormVersion = Left(curDesign, 5)
+			FormLanguage = Right(curDesign, 2)
+		
+			If docSignature.MailVersion(0) <> "" And (version <> FormVersion Or language <> FormLanguage) Then
+				'design was refreshed while SigMan was active and had CalendarProfile locked!
+				Call WGCLI_LogEvent(logStart + " - CalendarProfile does not match mailfile version: " + FormVersion + " " + FormLanguage , 1, 0, Nothing)
+							
+				Call fixRefresh ( ndbMail )
+			End If
+		Else
+			Call WGCLI_LogEvent(logStart + " - Design Refresh Strategy" , 1, 3, Nothing)
+		End If
+		
+		action = "push"
+		
+	ElseIf docSignature.Status(0) = "1" And docSignature.pushed(0) = "1" Then
+		'inactive and pushed out => reset
+		action = "reset"
+	End If
+	
+	'update Calendar Profile content	
+	Call pushSignatureContent ( docSignature, sesCurrent, ndbMail )
+	
+	'check if further action (design) needed
+	Set frmCPBackup = ndbMail.Getform("CalendarProfile.backup")
+	
+	If (action = "push" And Not frmCPBackup Is Nothing) Then
+		'signature is active and backup exists => nothing to do
+		Call WGCLI_LogEvent(docSignature.Fullname(0) & ": signature is active and backup exists => nothing to do", 1, 3, docSignature)
+		GoTo getout
+	ElseIf (action = "reset" And frmCPBackup Is nothing) Then
+		'signature Is inactive and no backup found => nothing to do
+		Call WGCLI_LogEvent(docSignature.Fullname(0) & ": signature Is inactive and no backup found => nothing to do", 1, 3, docSignature)			
+		GoTo getout
+	End If
+	
+	'go ahead with design update
+	
+	'Set docDXL = zzzGetDesignUpdateDefinition ( docSignature.ParentDatabase )
+	'If docDXL Is Nothing Then
+	'	Exit Sub
+	'End If
+	
+	dbSize = ndbMail.Size/1024
+	dbQuota = ndbMail.SizeQuota * 0.95
+	
+	If docDXL.Strategy(0) = "DXL" Then
+		'check for mail file quota before pushing DXL
+		'we do not push DXL if size of Mail DB is less than 5% close to the quota		
+		If ndbMail.SizeQuota <> 0 And dbSize >= dbQuota Then	'db.Size => bytes db.SizeQuota => kilobytes ... veeeeery logic		
+			docSignature.transmit = "0"
+			docSignature.transmitReason = "Mail File exceeded quota"
+			Call WGCLI_LogEvent(docSignature.Fullname(0) & ": No DXL Update - Mail File exceeded quota" , 2, 0, docSignature)
+			Call docSignature.Save(True, False, True)
+			Exit Sub
+		End If
+		
+		'Design manipulation using DXL => check for design modification
+		Call checkCalendarProfile ( docSignature, docDXL, ndbMail )		
+	ElseIf docDXL.Strategy(0) = "Template" Then		
+		'Design manipulation using Design Refresh
+		Call designRefresh ( docDXL, ndbMail )				
+	End If
+
+	If action = "push" then
+		docSignature.pushed = "1"
+		
+		docSignature.Strategy = docDXL.Strategy(0)
+		docSignature.MailVersion = version
+		docSignature.MailLanguage = language
+	End If
+	
+getout:
+	If action = "reset" Then
+		Call docSignature.RemoveItem("pushed")
+		Call docSignature.RemoveItem("LastPush")
+		
+		docSignature.Strategy = ""
+		docSignature.MailVersion = ""
+		docSignature.MailLanguage = ""
+	End If
+			
+	Call docSignature.RemoveItem( "transmit" )
+	Call docSignature.RemoveItem( "transmitReason" )	
+	Call docSignature.RemoveItem( "NotFound" )
+	Call docSignature.RemoveItem( "ForceUpdate" )
+	Call docSignature.Save(True, False, True)
+	
+	Exit Sub
+	
+errorhandling:
+	docSignature.transmit = "0"
+	docSignature.transmitReason = "Script Error - check Log"
+	Call docSignature.save ( True, False, True )
+	Call WGCLI_LogError("Error in launchProcess (" & CStr(Erl) & ")", docSignature)	
+	Exit Sub
+End Sub
+
+'++LotusScript Development Environment:2:2:designRefresh:1:8
+Private Sub designRefresh( docDXL As NotesDocument, ndbMail As NotesDatabase)
+	On Error GoTo ErrorHandler
+	
+	Call WGCLI_LogEvent(logStart + " - start routine 'designRefresh'" , 1, 3, Nothing)
+	
+	'console request: load convert mail\user.nsf * mail85.ntf
+	Dim cmd As String
+	Dim resp As String
+	
+	If (action = "push") Then
+		cmd = "load convert " & ndbMail.Filepath & " * " & docDXL.TemplateFilePath(0)
+	ElseIf (action = "reset") Then
+		cmd = "load convert " & ndbMail.Filepath & " * " & docDXL.RevertFilePath(0)
+	End If
+	
+	resp = ndbMail.Parent.SendConsoleCommand( ndbMail.Server, cmd)
+	Call WGCLI_LogEvent(logStart + " - sent console command for design update - " & action , 0, 0, Nothing)
+	
+	Exit Sub
+ErrorHandler:
+	Call WGCLI_LogError("Error in designRefresh (" & CStr(Erl) & ")", nothing)
+	Exit Sub
+End Sub
+
+'++LotusScript Development Environment:2:1:zzzGetVersionField:1:8
+Private Function zzzGetVersionField ( db As NotesDatabase ) As NotesDocument
+%REM 
+===============================================================
+Returns the notes note document that is the shared field design element (that tracks the version number)
+===============================================================
+%END REM
+	Dim nc As NotesNoteCollection
+	Dim doc As NotesDocument
+	Dim item As NotesItem
+	Dim strID As String
+	Dim booSharedField As Boolean
+	
+	booSharedField = False
+	Set nc = db.CreateNoteCollection ( False )
+	nc.SelectSharedFields = True
+	Call nc.BuildCollection
+	strID = nc.GetFirstNoteId
+	
+	Do Until strID = ""
+		Set doc = db.GetDocumentByID ( strID )		
+		Set item = doc.GetFirstItem ( "$Title" )
+		If item.Text = "$TemplateBuild" Then
+			booSharedField = True
+			Exit Do
+		End If
+		strID = nc.GetNextNoteId ( strID )
+	Loop
+	
+	If booSharedField Then
+		Set zzzGetVersionField = doc
+	Else
+		Set zzzGetVersionField = Nothing
+	End If
+	
+End Function
+
+'++LotusScript Development Environment:2:1:getFormVersion:1:8
+Private Function getFormVersion (ndbMail As NotesDatabase) As string
+	On Error GoTo errorHandler
+	
+	Call WGCLI_LogEvent(logStart + " - start routine 'getFormVersion'" , 1, 3, Nothing)
+	
+	'gets the version and language of the CalendarProfile Form
+	'based on the COMMENTS field in the Notes Form
+	
+	Dim sesCurrent As NotesSession
+	Dim streamCurrent As NotesStream
+	Dim dxlExporter As NotesDXLExporter
+	Dim nncCurrent As NotesNoteCollection
+	Dim docForm As NotesDocument
+	Dim strID As String
+	Dim strPath As String
+	
+	Set sesCurrent = ndbMail.Parent
+	
+	Set nncCurrent = ndbMail.CreateNoteCollection(False)
+	nnCCurrent.SelectForms = True
+	Call nnCCurrent.BuildCollection()
+	
+	strID = nncCurrent.GetFirstNoteID()
+	While strID <> ""
+		Set docForm = ndbMail.GetDocumentByID(strID)
+		If InStr(1,Implode(docForm.GetItemValue("$Title"),"|"),"(Calendar Profile)") > 0 Then
+			strID = ""
+		Else
+			strID = nncCurrent.GetNextNoteID(strID)
+		End If
+	Wend
+	Set nncCurrent = Nothing
+	
+	If docForm Is Nothing Then 
+		Exit function		'no form to manipulate found
+	End If
+	
+	'now we have the CalendarProfile Form
+	
+	'file path separator based on operating system
+	If InStr(1,LCase(sesCurrent.Platform), "windows") > 0 Then
+		strSeparator = "\"
+	Else
+		strSeparator = "/"
+	End If
+	
+	Set streamCurrent = sesCurrent.createStream()
+	strPath = sesCurrent.GetEnvironmentString("Directory", True) +  strSeparator +"checkCP.dxl" 
+	If Not (streamCurrent.Open(strPath)) Then
+		Exit function
+	End If
+	Call streamCurrent.Truncate
+	
+	'export Calendar Profile
+	Set dxlExporter = sesCurrent.CreateDXLExporter
+	Call dxlExporter.SetInput(docForm)			'form to be exported
+	Call dxlExporter.SetOutput(streamCurrent)	'file to be created
+	Call dxlExporter.Process
+	Call streamCurrent.Close()
+	
+	
+	Dim streamInput As NotesStream
+	Dim streamOutput As NotesStream
+	Dim parser As NotesDOMParser
+	
+	Set streamInput = sesCurrent.CreateStream()
+	Set streamOutput = sesCurrent.CreateStream()
+	
+	Call streamInput.Open(strPath)
+	Call streamOutput.Open(strPath +".backup.dxl")
+	
+	Call streamOutput.Truncate()
+	
+	Set parser = sesCurrent.CreateDomParser(streamInput, streamOutput)
+	Call parser.Process()
+	
+	
+	Dim docDOM As NotesDOMDocumentNode
+	Dim ndList As NotesDOMNodeList
+	Dim nodeInfo As NotesDOMNode	
+	Dim nodeCurrent As NotesDOMNode
+	Dim nodeElement As NotesDOMElementNode
+	Dim nCounter As Integer
+	
+	Set docDom = parser.Document	
+	Set ndList = docDom.Getelementsbytagname("form")
+	For nCounter = 1 To ndList.Numberofentries 
+		Set nodeCurrent = ndList.Getitem(nCounter)
+		Set nodeElement = nodeCurrent
+		
+		getFormVersion = Right(nodeElement.Getattribute("comment"),7)
+		Exit for
+	Next
+	
+	
+	Call parser.Serialize()
+	Call streamInput.Close()
+	Call streamOutput.Close()
+	
+	Kill strPath 
+	Kill strPath +".backup.dxl"
+	
+	Exit function
+ErrorHandler:
+	Call WGCLI_LogError("Error in getFormVersion (" & CStr(Erl) & ")", Nothing)
+	Exit function
+End Function
+
+'++LotusScript Development Environment:2:2:importNewForm:1:8
+Private Sub importNewForm( sesCurrent As NotesSession, ndbMail As NotesDatabase, docDXL As NotesDocument, strFile As String, action As String)
+	On Error GoTo ErrorHandler
+	
+	Call WGCLI_LogEvent(logStart + " - start routine 'importNewForm'" , 1, 3, Nothing)
+	
+	Dim dxlImport As NotesDXLImporter
+	Dim streamImport As NotesStream
+	Dim rtitem As NotesRichTextItem
+	
+	'import backup Calendar Profile
+	Set streamImport = sesCurrent.CreateStream()
+	If streamImport.Open(strFile +".backup.dxl") = False Then
+		Exit Sub
+	End If
+	
+	Set dxlImport = sesCurrent.Createdxlimporter(streamImport, ndbMail)
+	dxlImport.Designimportoption = DXLIMPORTOPTION_REPLACE_ELSE_CREATE
+	
+	Call dxlImport.Process()
+	
+	If action = "push" Then
+		'get attachment for importing new Calendar Profile		
+		Set rtitem = docDXL.getFirstItem ("DXLFile")
+		ForAll o In rtitem.EmbeddedObjects
+			Call o.ExtractFile (  strFile + ".import.dxl" )
+		End ForAll
+		
+		Set streamImport = sesCurrent.CreateStream()
+		If streamImport.Open(strFile + ".import.dxl") = False Then
+			Exit Sub
+		End If
+		
+		Set dxlImport = sesCurrent.Createdxlimporter(streamImport, ndbMail)
+		dxlImport.Designimportoption = DXLIMPORTOPTION_REPLACE_ELSE_CREATE
+		dxlImport.ACLImportOption = DXLIMPORTOPTION_IGNORE
+		dxlImport.InputValidationOption = VALIDATE_NEVER
+		dxlImport.Compilelotusscript = True
+		dxlImport.ReplaceDbProperties = False
+		dxlImport.ReplicaRequiredForReplaceOrUpdate = False
+		Call dxlImport.Process()
+		Call streamImport.Close()			
+	End If
+	
+	Exit Sub
+ErrorHandler:
+	Call WGCLI_LogEvent(dxlImport.log , 1, 0, Nothing)
+	
+	'remove .backup form for future import
+	Dim frmCalendarProfile As NotesForm
+	Set frmCalendarProfile = ndbMail.Getform("CalendarProfile.backup")	
+	
+	If Not frmCalendarProfile Is Nothing Then
+		Call frmCalendarProfile.Remove()
+	End If
+	
+	Call WGCLI_LogError("Error in importNewForm (" & CStr(Erl) & ")", Nothing)
+	Exit Sub
+End Sub

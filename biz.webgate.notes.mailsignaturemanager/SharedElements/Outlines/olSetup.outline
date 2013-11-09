@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='filter' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='C1257C1E002C398C'>
+<noteinfo noteid='29a' unid='A868293DE0A82738C12577E3006BBEC6' sequence='84'>
+<created><datetime>20101122T203651,90+01</datetime></created>
+<modified><datetime>20131109T090305,80+01</datetime></modified>
+<revised><datetime dst='true'>20120815T160140,85+02</datetime></revised>
+<lastaccessed><datetime>20131109T090305,80+01</datetime></lastaccessed>
+<addedtofile><datetime>20131109T090305,80+01</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=flexion/O=Indy</name><name>CN=Christian Guedemann/O=WGC/C=CH</name><name
+>CN=Marco Baumann/O=WGC/C=CH</name><name>CN=lpiic05p7/O=iic</name><name>CN=Marco Baumann/O=WGC/C=CH</name><name
+>CN=WGHub01/O=WGC/C=CH</name></updatedby>
+<wassignedby><name>CN=WGHub01/O=WGC/C=CH</name></wassignedby>
+<item name='$SiteMapList' sign='true'>
+<rawitemdata type='1a'>
+AQYBAAEABABIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAEAEgANgBACQIABgAAAAAAAAAIAAAAAAAAAC4AAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFU2V0dXAAAQD2/ysAAAAAAAMAEwAJ
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAdG9vbHMuZ2lmP0gAawABCAIACQAAAAAAAQALAAAALgAAADIA
+AAAAAAAAAAAAAAAAAwACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFS2V5d29yZHMA
+AQD2/ywACAAAAAMAAgAKAAAAAAAAAAAAAAAAAAAAAAAAAAAAdndLZXl3b3JkcwEA9v8wAAAAAAAD
+ABMADgAAAAAAAAAAAAAAAAAAAAAAAAAAAHN0YXRpb25lcnkuZ2lmSABnAAEIAgAKAAAAAAABAAkA
+AAAsAAAAMgAAAAAAAAAAAAAAAAADAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAVT
+eXN0ZW0AAQD2/ykAAAAAAAMAAgAHAAAAAAAAAAAAAAAAAAAAAAAAAAAAdndTZXR1cD8BAPb/MAAA
+AAAAAwATAA4AAAAAAAAAAAAAAAAAAAAAAAAAAABzdGF0aW9uZXJ5LmdpZkgAcgABCAIAZAAAAAAA
+AQAQAAAAMAAAADIAAAAAAAAAAAAAAAAAAwACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAFRGVzaWduIFVwZGF0ZQABAPb/LQAAAAAAAwACAAsAAAAAAAAAAAAAAAAAAAAAAAAAAAB2d0RY
+TEltcG9ydD8BAPb/MAAAAAAAAwATAA4AAAAAAAAAAAAAAAAAAAAAAAAAAABzdGF0aW9uZXJ5Lmdp
+Zg==
+</rawitemdata></item>
+<item name='$TITLE'><text>olSetup</text></item>
+<item name='$Flags'><text>m</text></item>
+<item name='$DesignerVersion' sign='true'><text>8.5.2</text></item>
+<item name='$CIAOOwner' sign='true'><text>CN=Peter Luder/O=WGC/C=CH</text></item>
+<item name='$CIAOTime' sign='true'><datetime dst='true'>20110831T111325,63+02</datetime></item>
+<item name='$CIAOCheckOutTime' sign='true'><datetime dst='true'>20120815T113700,79+02</datetime></item>
+<item name='$CIAOCheckOutComment' sign='true'><text>Design-Refresh von Version Legic</text></item>
+<item name='$POID'><datetime dst='true'>20110831T111325,63+02</datetime></item></note>
+

@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='C1257C1E002C398C'>
+<noteinfo noteid='452' unid='B58515BBCB2E61B5C12578E900397EF8' sequence='14'>
+<created><datetime dst='true'>20110811T122800,56+02</datetime></created>
+<modified><datetime>20131109T090308,43+01</datetime></modified>
+<revised><datetime dst='true'>20120815T160148,61+02</datetime></revised>
+<lastaccessed><datetime>20131109T090308,43+01</datetime></lastaccessed>
+<addedtofile><datetime>20131109T090308,43+01</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Marco Baumann/O=WGC/C=CH</name><name>CN=lpiic05p7/O=iic</name><name
+>CN=Marco Baumann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name></updatedby>
+<wassignedby><name>CN=WGHub01/O=WGC/C=CH</name></wassignedby>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$SourceSeqTime' sign='true'><datetime dst='true'>20110811T122800,58+02</datetime></item>
+<item name='$SourceSequence' sign='true'><text>00000001</text></item>
+<item name='$SourceURL' sign='true'><textlist><text>Notes:///C12577E3006A3452//B58515BBCB2E61B5C12578E900397EF8</text><text
+>Notes:///C12577E3006A3452:C12577E3006A3452:738ADECB//1566</text></textlist></item>
+<item name='$ClassName' sign='true'><text>View</text></item>
+<item name='$SourceDbPath' sign='true'><text>CN=DEV10/O=WGCDEV/C=CH!!Development\SignatureManager\Signature.nsf</text></item>
+<item name='$CacheDocVersion' sign='true'><number>1</number></item>
+<item name='$TITLE' sign='true'><text>Attach</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+dgACAEoAAwAkMjAABQANAEF1dG9tYXRpY2FsbHkAAQABADEACgKvACIAEAAAAAAAAAAAABRArgAS
+AAAAAAAAAAAAAACuAAQAtQMDAAUAHgAaAAMAAwAJAAQAJDIwJENvbmZsaWN0JFJFRgQABAAAAAgA
+ZgADAA==
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+BgAAAABE
+</rawitemdata></item>
+<item name='$Collation1' summary='true'>
+<rawitemdata type='2'>
+EAABAABEgGYAAAADACQyMA==
+</rawitemdata></item>
+<item name='$Collation2' summary='true'>
+<rawitemdata type='2'>
+EAABAABEgWYAAAADACQyMA==
+</rawitemdata></item>
+<item name='$VIEWFORMAT' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQABAAEACAAQAFZDQAMDAAQAXAAAACAAAQAACQIAAAAAAAAAAAICAAAAJDIwQW5oLlwAAgBKAAMA
+JDIwAAUADQBBdXRvbWF0aWNhbGx5AAEAAQAxAAoCrwAiABAAAAAAAAAAAAAUQK4AEgAAAAAAAAAA
+AAAArgAEALUDAwAHABAACQAJM1M0UzZTOFMAJgABAAAAAQEACQEAAAoBAQ4KAAABAK0rAQABAAEA
+AAAAAAAAAABXQwEAvwkAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAD//wAAAAAAAAAAAAAAAAAAQgAA
+AAAAAQD///8ABQD///8AAQAAAAAAAAAAAAAAAAABAP///wABAP///wAAAAEAAAAAAAEAAAAAAAEA
+AAAAAAAACAAAAAAAAQA=
+</rawitemdata></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$Flags'><text>^Y</text></item>
+<item name='$DesignerVersion' sign='true'><text>8.5.2</text></item>
+<item name='$CIAOOwner' sign='true'><text>CN=Peter Luder/O=WGC/C=CH</text></item>
+<item name='$CIAOTime' sign='true'><datetime dst='true'>20110831T111327,41+02</datetime></item>
+<item name='$CIAOCheckOutTime' sign='true'><datetime dst='true'>20120815T113701,64+02</datetime></item>
+<item name='$CIAOCheckOutComment' sign='true'><text>Design-Refresh von Version Legic</text></item></note>
+

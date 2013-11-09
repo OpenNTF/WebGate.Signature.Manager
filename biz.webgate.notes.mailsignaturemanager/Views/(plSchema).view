@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='C1257C1E002C398C'>
+<noteinfo noteid='35a' unid='EDA462FF61FA8F89C12577FC0023F8C2' sequence='87'>
+<created><datetime>20101217T073254,42+01</datetime></created>
+<modified><datetime>20131109T090307,07+01</datetime></modified>
+<revised><datetime dst='true'>20120815T160141,47+02</datetime></revised>
+<lastaccessed><datetime>20131109T090307,07+01</datetime></lastaccessed>
+<addedtofile><datetime>20131109T090307,07+01</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Christian Guedemann/O=WGC/C=CH</name><name>CN=Marco Baumann/O=WGC/C=CH</name><name
+>CN=lpiic05p7/O=iic</name><name>CN=Marco Baumann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name></updatedby>
+<wassignedby><name>CN=WGHub01/O=WGC/C=CH</name></wassignedby>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$TITLE' sign='true'><text>(plSchema)|plSchema</text></item>
+<item name='$Index' sign='true'><text>/C</text></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+bgACABgABgBUVGl0bGUFAAYAVFRpdGxlAwAFACIAHQADAAYACQAEAFRUaXRsZSRDb25mbGljdCRS
+RUYABAAEAAAAIAAFAAQARm9ybQEACwBmcm1UZW1wbGF0ZQAKAgMABwAOAAgACUwxUzJTM1M=
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+EwABAABEgGYAAAAGAFRUaXRsZQ==
+</rawitemdata></item>
+<item name='$VIEWFORMAT' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQABAAQAiEwAAFZDAQAGAAUAGgAAAEABAQAACQAAAAAAAAAAAAICAAAAVFRpdGxlVGl0ZWwaAAIA
+GAAGAFRUaXRsZQUABgBUVGl0bGUDACYAAQAAAAEBAAkBAA4KAQEOCgAAPwCtKwkAAQABAAAAAAAA
+AAAAV0MBAL8JAAAAAAAAAAAAAAAAAAAAAAEABAAAAAAA//8AAAAAAAAAAAAAAAAAAEIAFAAAAAEA
+////AAEA7+/vAAEAgICAAAAAAAAAAAAAAQD///8AAQD39/cAAAABAICAgAABAICAgAABAAAAAAAA
+AAgAAAAAAAEA
+</rawitemdata></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$Flags'><text>Y</text></item>
+<item name='$DesignerVersion' sign='true'><text>8.5.2</text></item>
+<item name='$ViewGlobalScript' summary='false' sign='true'><text>'++LotusScript Development Environment:2:5:(Options):0:74
+Option Public
+'++LotusScript Development Environment:2:5:(Forward):0:1
+
+'++LotusScript Development Environment:2:5:(Declarations):0:2
+
+<break/></text></item>
+<item name='$V5ACTIONS' sign='true'>
+<rawitemdata type='1'>
+vRwBAA8AAQABAAAAJSAAAAAAAAABAAoJCAACAHn/bAABAP///wABAMDAwAABAAAAgAABAP///wAA
+AB8AAwAAAAAAAAADAAAAAAAAAAAAAAAAAAAAP0ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAHH/MgAAAAAAAwATABAAAAAAAAAAAAAAAAAAAAAAAAAAAAB2
+aWV3R3JhZGllbnQuZ2lm/P86AAAAAAABAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AQCwwNAAAAAAAAAAAAAAAL7/VAAAAAEACgCeQQAADwAAAAAAAABOZXVlIFZvcmxhZ2UuLi4ALgAA
+ACIAAgDoAwAAAAAAAAEACwBmcm1UZW1wbGF0ZQDtAgMABwAKAAMACTRTAA==
+</rawitemdata></item>
+<item name='$ACTIONS' sign='true'>
+<rawitemdata type='1'>
+vRwBAA8AAQABAAAAJSAAAAAAAAABAAoJCAACAL7/VAAAAAEACgCeQQAADwAAAAAAAABOZXVlIFZv
+cmxhZ2UuLi4ALgAAACIAAgDoAwAAAAAAAAEACwBmcm1UZW1wbGF0ZQDtAgMABwAKAAMACTRTAA==
+</rawitemdata></item>
+<item name='$ViewGlobalScript_O' sign='true'>
+<rawitemdata type='14'>
+AQAAAkxTT0IDABQIZW4AAAQAAAADAAAAAAAEALAAAAAAAAAAAAAAAAAAAABMAP//QABgAAAA//98
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAEABQBMb3R1cyBQcm9kdWN0AAAAVjAuMAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAwAAAAAAAAAEAAAAsAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA
+AAMAAABXMzJJJQMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAwC0AAAAAAD//xwAKABHAEwATwBCAEEATABTACkAKABQAEwAUwBDAEgARQBNAEEAKQB8AFAA
+TABTAEMASABFAE0AQQAAAAAAlAADAE4ARQBXAAAAqAAGAEQARQBMAEUAVABFAAAAAAD//woASQBO
+AEkAVABJAEEATABJAFoARQAAAAAA//8JAFQARQBSAE0ASQBOAEEAVABFAAAA//8GAE8AQgBKAEUA
+QwBUAAAAAAD//wAAAAAAAAUACAAAAAAAFAAsPQQABwAAAAAAHQAAAgAAABEAEAAAAAAA//8BAAMA
+AwAAAAUACgAAAO8=
+</rawitemdata></item>
+<item name='$CIAOOwner' sign='true'><text>CN=Peter Luder/O=WGC/C=CH</text></item>
+<item name='$CIAOTime' sign='true'><datetime dst='true'>20110831T111326,53+02</datetime></item>
+<item name='$CIAOCheckOutTime' sign='true'><datetime dst='true'>20120815T113701,31+02</datetime></item>
+<item name='$CIAOCheckOutComment' sign='true'><text>Design-Refresh von Version Legic</text></item></note>
+

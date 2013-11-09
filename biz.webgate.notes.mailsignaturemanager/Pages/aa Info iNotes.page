@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='C1257C1E002C398C'>
+<noteinfo noteid='44e' unid='164214CB9DDA0FF0C12578CD00463C0C' sequence='17'>
+<created><datetime dst='true'>20110714T144708,92+02</datetime></created>
+<modified><datetime>20131109T090308,41+01</datetime></modified>
+<revised><datetime dst='true'>20120815T160148,59+02</datetime></revised>
+<lastaccessed><datetime>20131109T090308,41+01</datetime></lastaccessed>
+<addedtofile><datetime>20131109T090308,41+01</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Marco Baumann/O=WGC/C=CH</name><name>CN=lpiic05p7/O=iic</name><name
+>CN=Marco Baumann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name></updatedby>
+<wassignedby><name>CN=WGHub01/O=WGC/C=CH</name></wassignedby>
+<item name='$HTMLCode' sign='true'>
+<rawitemdata type='1'>
+X/8QAAIADwAHAAAAAAAAAA==
+</rawitemdata></item>
+<item name='$TITLE'><text>aa Info iNotes</text></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$Info' sign='true'>
+<rawitemdata type='1'>
+hhgBAIAAAAAAgAAAAQABAP///wAQAAAA
+</rawitemdata></item>
+<item name='$Flags'><text>C34WQ</text></item>
+<item name='$DesignerVersion' sign='true'><text>8.5.2</text></item>
+<item name='$$ScriptName' summary='false' sign='true'><text>aa Info iNotes</text></item>
+<item name='$Body' sign='true'>
+<rawitemdata type='1'>
+gQKC/1oAAQAAAAAAAAAAAKAFAACgBQgA0AKgBXAIQAsQDuAQsBOAFgAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAABAAAAAJSEoAUKAKAFCgAAAGQAAQAAAAQAAACDBAEAhf8+AAEBAAp3aGVyZSB0byBo
+aWRlIHNpZ25hdHVyZSBjb250ZW50IGluIGlOb3RlcyBQcmVmZXJlbmNlczqBAoMEAQCF/wgAAQAA
+CoECgwQBAIX/gAABAAAKaHR0cDovL3d3dy0xMC5sb3R1cy5jb20vbGRkL25kODVmb3J1bS5uc2Yv
+NWYyNzgwM2JiYTg1ZDhlMjg1MjU2YmYxMDA1NDYyMGQvZjQxMTZlMzVhMzFjYTkxZjg1MjU3ODcz
+MDA1MzgzMjU/T3BlbkRvY3VtZW50gQKDBAEAhf8IAAEAAAqBAoL/WgACAAAAAAAAAAAAoAUAAKAF
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAlIcAAAAAAAAA
+AAAAAAABAAAABAAAAIMEAgCF//cAAQAAClRoZSBtYWluIHN1YmZvcm0gZm9yIFByZWZlcmVuY2Vz
+IGlzIHNfTWFpbFByZWZlcmVuY2UuIEZvciB0aGUgY29kZSB0aGF0IG1hbmFnZXMgdGhlIFByZWZl
+cmVuY2VzIHRhYnMsIHRoZXJlIGFyZSB0aHJlZSBzdWJmb3Jtczogc18gTWFpbFByZWZlcmVuY2VF
+ZGl0Q29kZV94eCwgd2hlcmUgeHggaXMgdGhlIGJyb3dzZXIgdHlwZSAoSUUsIEdlY2tvLCBTYWZh
+cmkpLiBNYWtlIHN1cmUgdG8gbW9kaWZ5IGFsbCB0aHJlZS4gAIX/CQABAAAKAACF/4wAAQAACgBD
+aGVjayBmb3IgdGhlIG5hbWUvaWQgb2YgdGhlIGl0ZW0ocykgeW91IHdhbnQgdG8gaGlkZSB1c2lu
+ZyBhIERPTSBpbnNwZWN0b3IgbGlrZSBGaXJlYnVnLiBUaGVuIHNlYXJjaCBmb3IgaXQgaW4gdGhl
+IGFib3ZlIHN1YmZvcm1zLoX/CQABAAAKIACBAoMEAgCF/wgAAQAACoECgwQCAIX/KQABAAAKKioq
+KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAIECgwQCAIX/CAABAAAKgQKDBAIAhf8qAAEB
+AApXaGVyZSBpcyBzaWduYXR1cmUgY29udGVudCBzdG9yZWQ6gQKDBAIAhf8IAAEAAAqBAoMEAQCF
+/4AAAQAACmh0dHA6Ly93d3ctMTAubG90dXMuY29tL2xkZC9uZDg1Zm9ydW0ubnNmLzVmMjc4MDNi
+YmE4NWQ4ZTI4NTI1NmJmMTAwNTQ2MjBkL2NlMDE1YjU5NjJiZjM0NDA4NTI1NzY4MTAwNTNkOTRm
+P09wZW5Eb2N1bWVudIECgwQCAIX/CAABAAAKgQKDBAIAhf/qAAEAAApJbiBpTm90ZXMgdGhlIHNp
+Z25hdHVyZXMgYXJlIHN0b3JlZCBpbiB0aGUgdXNlcidzIGlOb3RlcyBwcm9maWxlIGRvY3VtZW50
+LiBUaGUgTm90ZXMnIHJpY2ggc2lnbmF0dXJlICh3aGljaCBpTm90ZXMgc3VwcG9ydHMpIGlzIHN0
+b3JlZCBpbiB0aGUgY2FsZW5kYXIgcHJvZmlsZSBkb2N1bWVudC4gSGVyZSdzIGEgc3VtbWFyeSB0
+aGF0IHRlbGxzIHdoZXJlIGVhY2ggc2lnbmF0dXJlIGlzIHVzZWQuhf8JAAEAAAoAAIX/JQABAQAK
+AFNpZ25hdHVyZV8xIC0gaU5vdGVzIHByb2ZpbGUAhf89AAEAAAoAVGhpcyBpcyBhIHRleHQgc2ln
+bmF0dXJlLCBub3QgcmljaCB0ZXh0IGFuZCBub3QgaHRtbACF/ycAAQEACgBIVE1MU2lnbmF0dXJl
+IC0gaU5vdGVzIHByb2ZpbGUAhf+YAAEAAAoASXMgYW4gaU5vdGVzIG9ubHkgaXRlbSB0aGF0J3Mg
+c3RvcmVkIGluIHRoZSBpbm90ZXMgUHJvZmlsZSBhbmQgaGFzIHRoZSBpTm90ZXMgc2lnbmF0dXJl
+cyB0aGF0IGFyZSBjcmVhdGVkIHVzaW5nIGlOb3RlcyBhbmQgdXNpbmcgYW4gSFRNTCBlZGl0b3Ld
+BgAAhf+F/xcAAQEJCgBTaWduYXR1cmVfUmljaADSCAEAAIAAAN4GAACF/4X/GwABAQAKIC0gQ2Fs
+ZW5kYXIgcHJvZmlsZQCF/0oAAQAACgBUaGlzIHRoZSBOb3RlcycgbmV3IFJpY2ggVGV4dCBzaWdu
+YXR1cmUgdGhhdCBpTm90ZXMgbm93IHN1cHBvcnRzLoX/CQABAAAKIACBAoMEAgCF/wgAAQAACoEC
+gwQCAIX/KQABAAAKKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAIECgwQCAIX/CAAB
+AAAKgQKDBAIAhf83AAEAAApIb3cgdG8gZmlsbCB0aGUgU2lnbmF0dXJlX1JpY2ggZmllbGQgaW4g
+aU5vdGVzPwA=
+</rawitemdata></item>
+<item name='$CIAOOwner' sign='true'><text>CN=Peter Luder/O=WGC/C=CH</text></item>
+<item name='$CIAOTime' sign='true'><datetime dst='true'>20110831T111327,31+02</datetime></item>
+<item name='$CIAOCheckOutTime' sign='true'><datetime dst='true'>20120815T113701,59+02</datetime></item>
+<item name='$CIAOCheckOutComment' sign='true'><text>Design-Refresh von Version Legic</text></item></note>
+

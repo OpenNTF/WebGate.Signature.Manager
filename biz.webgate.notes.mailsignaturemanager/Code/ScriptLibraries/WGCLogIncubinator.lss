@@ -1,0 +1,95 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+%REM
+	Library WGCLogIncubinator
+	Created Dec 12, 2010 by Christian Guedemann/WGC/CH
+	Description: Comments for Library
+%END REM
+Option Public
+Option Declare
+Use "Setup"
+Use "OpenLogFunctions"
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Sub Initialize
+Declare Public Sub WGCLI_LogError( strMessage As String, docCurrent As NotesDocument)
+Declare Public Sub WGCLI_LogEvent( strMessage As String, nSever As Integer, nLevel As Integer, docCurrent As NotesDocument)
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+
+'True = alles korrekt initialisier / False = Probleme -> LOG via Print
+Dim globalWGCLI_Status As Boolean
+Dim globalWGCLI_LogLevel As Integer
+
+
+'++LotusScript Development Environment:2:2:Initialize:1:10
+Sub Initialize
+	'During initialization set correct DB and all the stuff...
+	Dim sesCurrent As New NotesSession
+	Dim ndbLOG As NotesDatabase
+	Dim setupCurrent As New Setup(sesCurrent)
+	Dim logServer As String
+	
+	logServer = setupCurrent.getLogServerName()
+	If logServer = "" Then
+		Set ndbLOG = sesCurrent.Getdatabase(sesCurrent.CurrentDatabase.Server,setupCurrent.getLogFilePath, False)	
+	Else
+		Set ndbLOG = sesCurrent.Getdatabase(logServer,setupCurrent.getLogFilePath, False)
+	End If
+	
+	
+	If (ndbLog Is Nothing) Then
+		globalWGCLI_LogLevel = 3
+		globalWGCLI_Status = false
+		Exit sub
+	End If
+	Call UseCustomLogDb( ndbLOG)
+	globalWGCLI_LogLevel = setupCurrent.getLogMode
+	globalWGCLI_Status = true
+End Sub
+
+
+
+'++LotusScript Development Environment:2:2:WGCLI_LogError:5:8
+%REM
+	Sub WGCLI_LogError
+	Description: Comments for Sub
+%END REM
+Public Sub WGCLI_LogError( strMessage As String, docCurrent As NotesDocument)
+	If globalWGCLI_Status then
+		Call LogErrorEx(strMessage, SEVERITY_HIGH, docCurrent)
+	Else
+		Print "Error " & strMessage & " (" & Error & ") at Line " & Erl
+	End if
+End Sub
+
+'++LotusScript Development Environment:2:2:WGCLI_LogEvent:12:8
+%REM
+	Sub WGCLI_LogEvent
+	Description: Comments for Sub
+	nLevel = 1 -> Important Messages (Only Error and Status)
+	nLevel = 2 -> Debug Informations
+	nLevel = 3 -> Informations and Trace
+	
+	nSever = 0 -> No Impact / Not Important (like Status)
+	nSever = 1 -> Could be a Problem
+	nSever = 2 -> Actions requiered
+%END REM
+Public Sub WGCLI_LogEvent( strMessage As String, nSever As Integer, nLevel As Integer, docCurrent As NotesDocument)
+	
+	If (nLevel > globalWGCLI_LogLevel) Then Exit Sub
+	If globalWGCLI_Status then
+		Select Case nSever
+			Case 0:
+				Call LogEvent(strMessage, SEVERITY_LOW, docCurrent)
+			Case 1:
+				Call LogEvent(strMessage, SEVERITY_MEDIUM, docCurrent)
+			Case 2:
+				Call LogEvent(strMessage, SEVERITY_HIGH, docCurrent)
+			Case Else
+				Call LogEvent(strMessage, SEVERITY_HIGH, docCurrent)
+		End Select
+	Else
+		Print "Error " & strMessage & " (" & nSever & ")"
+	End if
+End Sub
+

@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='C1257C1E002C398C'>
+<noteinfo noteid='306' unid='D021A873CB252942C12577FA00705B1F' sequence='92'>
+<created><datetime>20101215T212713,59+01</datetime></created>
+<modified><datetime>20131109T090306,54+01</datetime></modified>
+<revised><datetime dst='true'>20120815T160141,27+02</datetime></revised>
+<lastaccessed><datetime>20131109T090306,54+01</datetime></lastaccessed>
+<addedtofile><datetime>20131109T090306,54+01</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=notes/O=iic</name><name>CN=lpiic05p7/O=iic</name><name
+>CN=Marco Baumann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name></updatedby>
+<wassignedby><name>CN=WGHub01/O=WGC/C=CH</name></wassignedby>
+<item name='$FormatNote' summary='true' sign='true'>
+<rawitemdata type='4'>
+AQDS2psDuPSP8onHRACBciXB
+</rawitemdata></item>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$Readers' sign='true' readers='true'><textlist><text>[DbAdmin]</text><text
+>[Server]</text></textlist></item>
+<item name='$TITLE' sign='true'><text>ZZ.System\Setup|vwSetup</text></item>
+<item name='$Index' sign='true'><text>/C</text></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+YgACAAwAAgAkM2kAAwAFACYAIgAEAAIABwAJAAQAJDNMb2dNb2RlJENvbmZsaWN0JFJFRgQABAAA
+ABwABQAEAEZvcm0BAAgAZnJtU2V0dXAKAgMABwAOAAgACUwxUzJTM1M=
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+DwABAABEAWYAAAACACQz
+</rawitemdata></item>
+<item name='$VIEWFORMAT' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQACAAkAiAwAAFZDBQACAAcADgAAAGAAAQAACAAAAAAAAAAAAAICAAAAVkMAAAcABwAAAAAAUAAB
+AAAIAAAAAAAAAAAAAgIAAAAkM0NyZWF0ZWQOAAIADAACACQzaQADAExvZ01vZGVMb2dNb2RlJgAB
+AAAAAQEACQEADgoBAQoKAAA/AK0rCQABAAEAAAAAAAAAAABXQwEAAAgAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAD//wAAAAAAAAAAAAAAAAAAV0MBAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//8A
+AAAAAAAAAAAAAAAAAEIAFAAAAAEA////AAEA7+/vAAEAgICAAAAAAAAAAAAAAQD///8AAQD39/cA
+AAABAICAgAABAAAAgAABAAAAAAAAAAgAAAAAAAEA
+</rawitemdata></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$Flags'><text>Y</text></item>
+<item name='$DesignerVersion' sign='true'><text>8.5.2</text></item>
+<item name='$V5ACTIONS' sign='true'>
+<rawitemdata type='1'>
+vRwBAAAAAQABAAAAJSAAAAAAAAABAJcJCAACAHn/bAABAP///wABAAAAAAABAABAgAABAOHh4QAA
+AB8AAwAAAAAAAAADAAAAAgAAAwAAAAAAAAAAP0ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAHH/MgAAAAAAAwATABAAAAAAAAAAAAAAAAAAAAAAAAAAAAB2
+aWV3R3JhZGllbnQuZ2lm/P86AAAAAAABAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AQCxsdIAAAAAAAAAAAAAAL7/TgAAAAEABQCeAQAADAAAAAAAAABDcmVhdGUgU2V0dXAsAAAAHgAC
+AOgDAAAAAAAAAQAIAGZybVNldHVw7QIDAAcADAAFAAkwUzBFAL7/3AAAAAEAJACeAQAADQAAAAAA
+AABMb2cgREIglGZmbmVuALgAAQBYAAcAX3NlcnZlcgAFAA0ATG9nU2VydmVyTmFtZQABAAAACwKv
+AC4AGAAFAA0ATG9nU2VydmVyTmFtZQCuABYAiwAAAAAAAAAAAPA/awKuAAQAtQMDAAcAHAAWAAkx
+UzJTM1M0UzVTNlM3UzhTOVMxMFMAADAAAgC/CwAAAAAAAAUABwBfc2VydmVyAAUACwBMb2dGaWxl
+UGF0aAAfAu0CAwAHABIACwAJMFIzUzRTNVM2UwC+/0YAAAABAAAAnkERBQ8AAAAPAAAAU2hvdyBT
+ZWFyY2ggQmFyACAAAAASAAIAkBcAAAAAAADtAQMABwAMAAUACTBTMEUA9v8tAAAAAAADABMACwAA
+AAAAAAAAAAAAAAAAAAAAAAAAAG5kOHNyY2guZ2lmP17/KAAAAAAAAAAAAAwAAAAAAAAAAAAAAAAA
+AAAMAAAACgABAAAAAwBf/xAAAgAMAAcAAAAAAAAAX/8QAAIAAQAHAAAAAAAAAF//EAACAAIABwAA
+AAAAAABf/xAAAgALAAcAAAAAAAAAX/8QAAIAFAAHAAAAAAAAAF//EAACAAkABwAAAAAAAABf/xAA
+AgAIAAcAAAAAAAAAX/8QAAIACgAHAAAAAAAAAF//EAACAAMABwAAAAAAAABf/xAAAgAGAAcAAAAA
+AAAAX/8QAAIABwAHAAAAAAAAAF//EAACAAUABwAAAAAAAABf/xAAAgAEAAcAAAAAAAAA
+</rawitemdata></item>
+<item name='$ACTIONS' sign='true'>
+<rawitemdata type='1'>
+vRwBAAAAAQABAAAAJSAAAAAAAAABAJcJCAACAL7/TgAAAAEABQCeAQAADAAAAAAAAABDcmVhdGUg
+U2V0dXAsAAAAHgACAOgDAAAAAAAAAQAIAGZybVNldHVw7QIDAAcADAAFAAkwUzBFAL7/3AAAAAEA
+JACeAQAADQAAAAAAAABMb2cgREIglGZmbmVuurgAAQBYAAcAX3NlcnZlcgAFAA0ATG9nU2VydmVy
+TmFtZQABAAAACwKvAC4AGAAFAA0ATG9nU2VydmVyTmFtZQCuABYAiwAAAAAAAAAAAPA/awKuAAQA
+tQMDAAcAHAAWAAkxUzJTM1M0UzVTNlM3UzhTOVMxMFMAADAAAgC/CwAAAAAAAAUABwBfc2VydmVy
+AAUACwBMb2dGaWxlUGF0aAAfAu0CAwAHABIACwAJMFIzUzRTNVM2UwC+/0YAAAABAAAAnkERBQ8A
+AAAPAAAAU2hvdyBTZWFyY2ggQmFyzCAAAAASAAIAkBcAAAAAAADtAQMABwAMAAUACTBTMEUA
+</rawitemdata></item>
+<item name='$CIAOOwner' sign='true'><text>CN=Peter Luder/O=WGC/C=CH</text></item>
+<item name='$CIAOTime' sign='true'><datetime dst='true'>20110831T111326,35+02</datetime></item>
+<item name='$CIAOCheckOutTime' sign='true'><datetime dst='true'>20120815T113701,24+02</datetime></item>
+<item name='$CIAOCheckOutComment' sign='true'><text>Design-Refresh von Version Legic</text></item></note>
+

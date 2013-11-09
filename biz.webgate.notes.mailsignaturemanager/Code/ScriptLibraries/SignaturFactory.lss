@@ -1,0 +1,511 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Public
+Option Declare
+Use "WGCLogIncubinator"
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class SignaturFactory
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+Public Class SignaturFactory
+	Private m_sesCurrent 	As NotesSession
+	Private m_ndbCurrent 	As NotesDatabase
+	Private m_viwFooter 	As NotesView
+	Private m_viwAllFooter 	As NotesView
+	Private m_viwSchema 	As NotesView
+	
+	Sub New ()
+		Set m_sesCurrent 	= New NotesSession
+		Set m_ndbCurrent 	= m_sesCurrent.Currentdatabase
+		Set m_viwFooter 	= m_ndbCurrent.Getview("LUPDisclaimerActiv")
+		Set m_viwAllFooter 	= m_ndbCurrent.getView("LUPAllDisclaimer")
+		Set m_viwSchema 	= m_ndbCurrent.getView("LUPTemplates")
+	End Sub
+	
+	Public Sub checkDisclaimerStatus()
+		Dim viwSignatures As NotesView
+		Dim dcSignature As NotesDocumentCollection
+		Dim docNext As NotesDocument
+		Dim docProcess As NotesDocument
+		Dim blActive As Boolean
+		
+		Set docNext = m_viwAllFooter.Getfirstdocument()
+		While Not (docNext Is Nothing)
+			blActive = false
+			Set docProcess = docNext
+			Set docNext = m_viwAllFooter.Getnextdocument(docNext)
+			If (IsDate(docProcess.DDatum(0))) Then
+				If docProcess.DDatum(0) <= Today Then
+					blActive = True
+					If (IsDate(docProcess.DDatumEnd(0))) Then
+						If docProcess.DDatumEnd(0) < Today Then
+							blActive = false
+						End If
+					End if	
+				End If
+			End if
+			If blActive And docProcess.isActiv(0) = "" Then
+				docProcess.isActiv = "1"
+				Call docProcess.save(True,False,True)
+				Call WGCLI_LogEvent( docProcess.Subject(0) & " aktiviert", 0, 1, Nothing)
+				'flag all documents using this footer for push
+				Set viwSignatures = m_ndbCurrent.getView("SignaturesByTemplate")
+				ForAll wert In docProcess.Template
+					'wert = schema
+					Set dcSignature = viwSignatures.getAllDocumentsByKey ( wert )
+					Call dcSignature.stampAll ( "ForceUpdate", "1")
+				End ForAll
+			End if	
+			If blActive = false And docProcess.isActiv(0) = "1" Then
+				docProcess.isActiv = ""
+				Call docProcess.save(True,False,True)
+				Call WGCLI_LogEvent( docProcess.Subject(0) & " deaktiviert", 0, 1, Nothing)
+				'flag all documents using this footer for push
+				Set viwSignatures = m_ndbCurrent.getView("SignaturesByTemplate")
+				ForAll wert In docProcess.Template
+					'wert = schema
+					Set dcSignature = viwSignatures.getAllDocumentsByKey ( wert )
+					Call dcSignature.stampAll ( "ForceUpdate", "1")
+				End ForAll
+			End If
+		wend
+		
+	End Sub
+	
+	Public function updateSignatureFields ( docProfile  As NotesDocument ) As boolean
+		
+		updateSignatureFields = false
+		
+		On Error GoTo errorhandling
+		
+		Dim rtitem As NotesRichTextItem
+		Dim rtitem2 As NotesRichTextItem
+		Dim footItem As NotesRichTextItem
+		Dim docFooter As NotesDocument
+		
+		Set rtitem = docProfile.GetFirstItem ( "SignaturEdit" )
+		Call docProfile.RemoveItem ( "Signatur_Rich" )
+		
+		'Step 1 Create temporary document to store the items for export
+		Dim sess As New NotesSession
+		Dim db As NotesDatabase
+		Dim docTemp As NotesDocument
+		Dim rtitemTemp As NotesRichTextItem
+		
+		Set db = sess.CurrentDatabase
+		Set docTemp = db.CreateDocument
+		Set rtitemTemp = docTemp.CreateRichTextItem ("Signatur_Rich")
+		Call rtitemTemp.AppendRTItem (rtitem)
+		rtitemTemp.Update
+		
+		'Step 2 Create DXL Exporter object and export temporary document including the RTItem to a string
+		Dim exporter As NotesDXLExporter
+		Dim sOutput As String
+		Set exporter = sess.CreateDXLExporter
+		sOutput = exporter.Export (docTemp)
+		
+		'clean temporary document
+		call docTemp.RemovePermanently ( True )
+		
+		'Step 3 Do the string manipulation
+		'special tags		
+		sOutput = checkField ( docProfile, sOutput , "[Title]", "[Title]", "Title", 1)
+		sOutput = checkField ( docProfile, sOutput , "[Abteilung]", "[Department]", "Abteilung", 1)
+		sOutput = checkField ( docProfile, sOutput , "[Telefon]", "[Phone]", "Telefon", 1)		
+		sOutput = checkField ( docProfile, sOutput , "[Fax]", "[Fax]", "Fax", 1)
+		sOutput = checkField ( docProfile, sOutput , "[Mobile]", "[Mobile]", "Mobile", 1)
+		sOutput = checkField ( docProfile, sOutput , "[WebSite]", "[WebSite]", "WebSite", 1)
+		
+		'standard tags
+		sOutput = checkField ( docProfile, sOutput , "[Vorname]", "[FirstName]", "Vorname", 0)
+		sOutput = checkField ( docProfile, sOutput , "[Nachname]", "[LastName]", "Nachname", 0)
+		sOutput = checkField ( docProfile, sOutput , "[Firma]", "[Company]", "Firma", 0)
+		sOutput = checkField ( docProfile, sOutput , "[Strasse]", "[Street]", "Strasse", 0)
+		sOutput = checkField ( docProfile, sOutput , "[State]", "[State]", "State", 0)
+		sOutput = checkField ( docProfile, sOutput , "[PLZ]", "[ZIP]", "PLZ", 0)
+		sOutput = checkField ( docProfile, sOutput , "[Ort]", "[Location]", "Ort", 0)
+		sOutput = checkField ( docProfile, sOutput , "[Land]", "[Country]", "Land", 0)
+		sOutput = checkField ( docProfile, sOutput , "[Mailadresse]", "[Email]", "Mailadresse", 0)
+		
+		sOutput = Replace( sOutput, "[$#", "")
+		
+		'Step 4 Reimport string to a temporary document
+		Dim importer As NotesDXLImporter
+		Set importer = sess.CreateDXLImporter
+		Call importer.Import (sOutput, db)
+		Set docTemp = db.GetDocumentByID (importer.GetFirstImportedNoteId)
+		Set rtitemTemp = docTemp.GetFirstItem("Signatur_Rich")
+		
+		'Step 5 Append imported rtitem to document
+		Set rtitem2 = rtitemTemp.CopyItemToDocument(docProfile, "Signatur_Rich")
+		
+		'clean up
+		Delete rtitemTemp
+		Delete docTemp
+
+		'Footer
+		If docProfile.Disclaimer(0) = "1" Then
+			Dim dcAll As NotesDocumentCollection
+			Dim dcSchema As NotesDocumentCollection
+			Dim fieldnames(2) As string
+			Set dcAll = m_viwFooter.GetAllDocumentsByKey ( "**ALL**", true )
+			Set dcSchema = m_viwFooter.GetAllDocumentsByKey ( docProfile.Template(0), True )
+			
+			If not (dcAll.Count = 0 And dcSchema.Count = 0) Then
+				If dcAll.Count = 0 Then
+					Set dcAll = dcSchema
+				elseIf dcSchema.Count > 0 then
+					Call dcAll.Merge ( dcSchema )
+				End if
+				'now sort by Position, then by title
+				'caution - the sorting is done text-style, so 1000 comes before 11!
+				fieldnames(0) = "Position"
+				fieldnames(1) = "DTitle"
+				Set dcAll = sortCollection(dcAll, fieldnames())
+				
+				Set docFooter = dcAll.GetFirstDocument
+				While Not docFooter Is Nothing
+					Set footItem = docFooter.GetFirstItem ( "DDisclaimer" + docProfile.Sprache(0) )
+					If Not footItem Is Nothing Then
+						Call rtitem2.AddNewline (1)
+						Call rtitem2.AppendRTItem ( footItem )
+					End If
+					Set docFooter = dcAll.GetNextDocument ( docFooter ) 
+				Wend
+			End if
+	
+		End If
+		rtitem2.Issigned = False
+		rtitem2.Isencrypted = False
+		rtitem2.Isprotected = False
+		
+		docProfile.Signatur = rtitem2.GetUnformattedText
+		
+		updateSignatureFields = True
+		
+		Exit function
+errorhandling:
+		If importer.Log <> "" Then
+			Call WGCLI_LogError(importer.Log & Chr$(13) & Chr$(13) & sOutput, nothing)
+			MsgBox "Signatur konnte nicht aktualisiert werden", 0+16, "Fehler bei " & docProfile.FullName(0)			
+		Else
+			MsgBox GetThreadInfo(1) & " -- Line: " & CStr(Erl) & " -- " & Error, 0+16, db.Title			
+		End If		
+		
+		Exit function
+	End function
+	
+	Public Function updateSignaturSchema( docSignatur As NotesDocument ) As boolean
+		Dim docSchema As NotesDocument
+		Dim rtiSignatur As NotesRichTextItem
+		Dim rtiTarget As NotesRichTextItem
+		updateSignaturSchema = false
+		Set docSchema = m_viwSchema.GetDocumentByKey ( docSignatur.Template(0), True )
+		
+		If Not docSchema Is Nothing Then
+			Set rtiSignatur = docSchema.getFirstItem( "Signature" )		'Vorlagesignatur
+		Else
+			Print "Schema " & docSignatur.Template(0) &" wurde nicht gefunden"
+			Exit function
+		End If
+		
+		'recreate SignaturEdit
+		Call docSignatur.RemoveItem ( "SignaturEdit" )
+		
+		docSignatur.individual = ""
+		
+		Set rtiTarget = rtiSignatur.Copyitemtodocument(docSignatur, "SignaturEdit")
+		rtiTarget.Isencrypted = False
+		rtiTarget.Isprotected = False
+		rtiTarget.Issigned = False
+		
+		updateSignaturSchema = true
+	End Function
+	
+	Public Sub updateFromNAB( docCurrent As NotesDocument, docNAB As NotesDocument)
+		Call checkUpdateNab("Vorname", docCurrent,docNab.FirstName(0))
+		Call checkUpdateNab("Nachname", docCurrent,docNab.LastName(0))
+		docCurrent.FullName = docNab.FullName		
+		Call checkUpdateNab("Firma", docCurrent,docNab.CompanyName(0))
+		Call checkUpdateNab("Abteilung", docCurrent,docNab.Department(0))
+		Call checkUpdateNab("Telefon", docCurrent,docNab.OfficePhoneNumber(0))
+		Call checkUpdateNab("Fax", docCurrent,docNab.OfficeFAXPhoneNumber(0))
+		Call checkUpdateNab("Strasse", docCurrent,docNab.OfficeStreetAddress(0))
+		Call checkUpdateNab("State", docCurrent,docNab.OfficeState(0))
+		Call checkUpdateNab("PLZ", docCurrent,docNab.OfficeZIP(0))
+		Call checkUpdateNab("Ort", docCurrent,docNab.OfficeCity(0))
+		Call checkUpdateNab("Land", docCurrent,docNab.OfficeCountry(0))
+		Call checkUpdateNab("Title", docCurrent,docNab.JobTitle(0))		
+		Call checkUpdateNab("Mailadresse", docCurrent,docNab.InternetAddress(0))
+		Call checkUpdateNab("Mobile", docCurrent,docNab.CellPhoneNumber(0))
+		Call checkUpdateNab("WebSite", docCurrent,docNab.WebSite(0))
+		
+		docCurrent.mailserver = docNab.MailServer(0)
+		docCurrent.mailfile = docNab.MailFile(0)
+		If docCurrent.Sprache(0) = "" then
+			If docNab.preferredLanguage(0) = "" Or Len(docNab.preferredLanguage(0)) <> 2 Then
+				docCurrent.Sprache = "DE"
+			Else
+				docCurrent.Sprache = UCase(docNab.preferredLanguage(0))
+			End If
+		End if
+	End Sub
+	
+	Private Function replaceValues(sOutput As String, tag As String, newValue As string) As string
+		
+		On Error GoTo errorhandling
+		
+		'if one of following tags is empty and standing on its own line
+		'(no other tag on same line), the whole line is removed in the signature:
+		'[Title], [Department], [Phone], [Fax], [Mobile], [WebSite]
+		
+		If newValue <> "$#" Then
+			'tag value available
+			sOutput = Replace(sOutput,tag , newValue)
+		Else
+			'tag value NOT available
+			'<break/> => Shift + Enter => TO AVOID WHEN CREATING SCHEMAS!!!
+			'<par def='x'> => Enter
+			Dim posStart As Long			
+			Dim posEnd As Long
+			Dim length As Integer
+			Dim pardef As String
+			Dim toReplace As String
+			
+			posStart = InStr(sOutput, tag)
+			posEnd = posStart
+			
+			'example of DXL code for a formatted tag:			
+			'<par def='3'><run><font size='12pt' style='bold italic' color='red'/>[tag]</run></par>
+			
+			'navigate to first character on [tag]'s line			
+			Do Until (Right(Left(sOutput, posStart), 8) = "<par def" Or Right(Left(sOutput, posStart), 8) = "<break/>")
+				posStart = posStart-1
+			Loop 
+			
+			posStart = posStart -8		'now i am left of "<par def"
+			
+			'navigate to last character on [tag]'s line
+			Do Until (Right(Left(sOutput, posEnd), 6) = "</par>" Or Right(Left(sOutput, posEnd), 4) = "<par" Or Right(Left(sOutput, posEnd), 8) = "<break/>")
+				posEnd = posEnd+1
+			Loop
+			
+			toReplace = Right(Left(sOutput, posEnd), posEnd-posStart)
+			If Left(toReplace,4) <> "<par" And Right(toReplace, 6) = "</par>" Then
+				toReplace = Left(toReplace, Len(toReplace)-6)			
+			End If 
+			
+			'calculate no. of tags on current line, only go ahead if [tag] is the only tag
+			Dim ret As Variant
+			ret = Split(toReplace, "[")
+			If UBound(ret) = 1 Then
+				'replace whole string incl. formatting and new line
+				sOutput = Replace(sOutput,toReplace, "")				
+			Else
+				'more than the [tag] tag, only replace the value
+				sOutput = Replace(sOutput, "[" & tag, "")
+			End If			
+		End If
+		
+		replaceValues = sOutput	
+		
+		Exit function
+errorhandling:
+		MsgBox GetThreadInfo(1) & " -- Line: " & CStr(Erl)
+		
+		Exit function	
+	End Function
+	
+	Private Sub checkUpdateNab (strFieldTarget As String, docTarget As NotesDocument, strValue As String)
+		If docTarget.hasItem("upd"+ strFieldTarget) Then
+			If (docTarget.Getitemvalue("upd"+strFieldTarget)(0) = "") Then
+				Exit sub
+			End If
+		End If
+		Call docTarget.Replaceitemvalue(strFieldTarget, strValue)
+	End Sub
+	Private Function convertEntityRef (pstrValu As String) As String
+		'http://searchdomino.techtarget.com/tip/Five-special-characters-in-DXL		
+		Const AMPERSAND = "&amp;"  
+		Const APOSTROPHE = "&apos;" 
+		Const DBL_QUOTES = "&quot;" 
+		Const GT = "&gt;" 
+		Const LT = "&lt;"
+		 
+		pstrValu$ = Replace(pstrValu$,{&}, AMPERSAND) 
+		pstrValu$ = Replace(pstrValu$,{'}, APOSTROPHE) 
+		pstrValu$ = Replace(pstrValu$,{<}, LT) 
+		pstrValu$ = Replace(pstrValu$,{>}, GT) 
+		pstrValu$ = Replace(pstrValu$,{"}, DBL_QUOTES)
+		
+		convertEntityRef = pstrValu$
+	End Function
+	
+	Private function checkField ( docProfile As NotesDocument, sOutput As String, tagDE As String, tagEN As String, fieldName As String, special As integer ) As string
+		
+		Dim toReplace As String
+		
+		If InStr(sOutput, tagDE) > 0 Then
+			toReplace = StrRightBack(tagDE,"[")			
+		ElseIf InStr(sOutput, tagEN) > 0 Then
+			toReplace = StrRightBack(tagEN,"[")
+		End If
+		If toReplace <> "" Then
+			If special = 1 Then
+				'special tag
+				sOutput = replaceValues(sOutput, toReplace, "$#" & convertEntityRef(docProfile.getItemValue(fieldName)(0)))
+			Else'standard tag
+				sOutput = Replace(sOutput, toReplace, "$#" & convertEntityRef(docProfile.getItemValue(fieldName)(0)))				
+			End if
+		End If
+		
+		checkField = sOutput
+		
+	End Function
+	
+	
+	Private Function sortCollection(coll As NotesDocumentCollection, fieldnames() As String) As NotesDocumentCollection
+		
+		' Description:
+		' Sorts and returns a NotesDocumentCollection
+		' Fieldnames parameter is an array of strings
+		' with the field names to be sorted on
+		' 
+		' Modified by Per Henrik Lausten, November 2006 - http://per.lausten.dk/blog/		 
+		' 
+		' Based on code by:
+		' Max Flodén - http://www.tjitjing.com/blog/2006/05/how-to-sort-notesdocumentcollection-in.html
+		' Joe Litton - http://joelitton.net/A559B2/home.nsf/d6plinks/JLIN-5ZU3WH
+		' Peter von Stöckel - http://www.bananahome.com/users/bananahome/blog.nsf/d6plinks/PSTL-6UWC7K
+		'
+		' Example of use
+		' Dim fieldnames(0 To 2) As String
+		' fieldnames(0) = "SKU"
+		' fieldnames(1) = "OrderDate"
+		' fieldnames(2) = "Client"
+		' Set collection = SortCollection (collection, fieldnames) 
+		
+		Dim session As New NotesSession
+		Dim db As NotesDatabase
+		Dim collSorted As NotesDocumentCollection
+		Dim doc As NotesDocument
+		Dim i As Integer, n As Integer
+		Dim arrFieldValueLength() As Long
+		Dim arrSort, strSort As String
+		
+		Set db = session.CurrentDatabase
+		
+		' ---
+		' --- 1) Build array to be sorted
+		' ---
+		
+		'Fill array with fieldvalues and docid and get max field length
+		ReDim arrSort(0 To coll.Count -1, 0 To UBound(fieldnames) + 1)
+		ReDim arrFieldValueLength(0 To UBound(fieldnames) + 1)
+		For i = 0 To coll.Count - 1
+			Set doc = coll.GetNthDocument(i + 1)
+			For n = 0 To UBound(fieldnames) + 1
+				
+				If n = UBound(fieldnames) + 1 Then
+					arrSort(i,n) = doc.UniversalID
+					arrFieldValueLength(n) = 32
+				Else
+					arrSort(i,n) = "" & doc.GetItemValue(fieldnames(n))(0)
+					' Check length of field value
+					If Len(arrSort(i,n)) > arrFieldValueLength(n) Then
+						arrFieldValueLength(n) = Len(arrSort(i,n))
+					End If
+				End If
+				
+			Next n
+		Next i
+		
+		'Merge fields into array that can be used for sorting using the sortValues function
+		Dim aryFieldValues() As String 
+		For i = 0 To coll.Count - 1		 		 
+			ReDim Preserve aryFieldValues(1 To i+1)
+			
+			strSort = ""
+			For n = LBound(fieldnames) To UBound(fieldnames) + 1
+				strSort = strSort & Left(arrSort(i,n) & Space(arrFieldValueLength(n)), arrFieldValueLength(n))
+			Next n
+			
+			aryFieldValues(i+1) = strSort
+		Next i
+
+		
+		' ---
+		' --- 2) Sort array using sortValues function by Joe Litton
+		' ---
+		arrSort = sortValues(aryFieldValues)
+		
+		' ---
+		' --- 3) Use sorted array to sort collection
+		' ---
+		Set collSorted = db.GetProfileDocCollection("Foo")  ' create an empty NotesDocumentCollection
+		ForAll y In arrSort
+			Set doc = db.GetDocumentByUNID(Right(y, 32))
+			Call collSorted.AddDocument(doc)
+		End ForAll
+		
+		' ---
+		' --- 4) Return collection
+		' ---
+		Set SortCollection = collSorted
+		
+	End Function
+
+
+	Private Function sortValues(varValues As Variant) As Variant
+		On Error GoTo errHandler
+		' Use Shell sort to sort input array and return array sorted ascending
+		
+		Dim k As Integer
+		Dim i As Integer
+		Dim j As Integer
+		Dim h As Integer
+		Dim r As Integer
+		Dim temp As String
+		
+		'Set up for Shell sort algorithm
+		k = UBound( varValues )
+		h = 1
+		Do While h < k
+			h = (h*3)+1
+		Loop
+		h = (h-1)/3
+		If h > 3 Then
+			h = (h-1)/3
+		End If
+		
+		'Shell sort algorithm
+		Do While h > 0
+			For i = 1+h To k
+				temp = varValues(i)
+				j = i-h
+				Do While j >0
+					If varValues(j)>temp Then
+						varValues(j+h) = varValues(j)
+						varValues(j) = temp
+					Else
+						Exit Do
+					End If
+					j = j-h
+				Loop
+			Next i
+			h = (h-1)/3
+		Loop
+		
+		'Write new sorted values    
+		sortValues = varValues
+		
+getOut:
+		Exit Function
+		
+errHandler:		
+		sortValues = "ERROR"
+		Resume getOut
+		
+	End Function
+		
+End Class

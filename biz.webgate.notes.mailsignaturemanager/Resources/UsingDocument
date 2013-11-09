@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note default='true' class='helpusingdocument' xmlns='http://www.lotus.com/dxl'
+ version='9.0' replicaid='C1257C1E002C398C'>
+<noteinfo noteid='1de' unid='ED8AEA195D65A131C12576AA00393A45' sequence='32'>
+<created><datetime>20100113T112504,69+01</datetime></created>
+<modified><datetime>20131109T090304,53+01</datetime></modified>
+<revised><datetime dst='true'>20120815T160140,27+02</datetime></revised>
+<lastaccessed><datetime>20131109T090304,53+01</datetime></lastaccessed>
+<addedtofile><datetime>20131109T090304,53+01</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Marco Baumann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name></updatedby>
+<wassignedby><name>CN=WGHub01/O=WGC/C=CH</name></wassignedby>
+<item name='$Fonts'>
+<rawitemdata type='1'>
+i/8oAAEABSZWZXJkYW5hAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==
+</rawitemdata></item>
+<item name='$HTMLCode' sign='true'>
+<rawitemdata type='1'>
+</rawitemdata></item>
+<item name='$Info' sign='true'>
+<rawitemdata type='1'>
+hhgBAIAAAAAAgAAAAQABAP///wAQAAAA
+</rawitemdata></item>
+<item name='$DesignerVersion' sign='true'><text>8.5.2</text></item>
+<item name='$Body' sign='true'>
+<rawitemdata type='1'>
+gQKC/1oAAQAAAAAAAAAAAKAFAACgBQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAABAAAAAJSHAAAAAAAAAAAAAAAAAQAAAAQAAACDBAEAhf8IAAEAAAqBAoL/WgACAAAA
+AAAAAAAAoAUAAKAFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEA
+AAAAlIUAAAAAoAUGAAAAAAABAAAABAAAAIMEAgCF/xoAAQAACnByZXNzIEVTQyB0byBjbG9zZQ==
+</rawitemdata></item>
+<item name='$CIAOOwner' sign='true'><text>CN=Peter Luder/O=WGC/C=CH</text></item>
+<item name='$CIAOTime' sign='true'><datetime dst='true'>20110831T111324,95+02</datetime></item>
+<item name='$CIAOCheckOutTime' sign='true'><datetime dst='true'>20120815T113700,56+02</datetime></item>
+<item name='$CIAOCheckOutComment' sign='true'><text>Design-Refresh von Version Legic</text></item>
+<item name='$Flags'><text>R</text></item></note>
+

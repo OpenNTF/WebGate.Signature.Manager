@@ -1,0 +1,232 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Public
+Option Declare
+
+Use "SignaturFactory"
+Use "WGCLogIncubinator"
+Use "UIPortalActions"
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Sub updateActiveSignatures()
+Declare Sub NABHousekeeping()
+
+'++LotusScript Development Environment:2:5:(Declarations):0:2
+
+'++LotusScript Development Environment:2:2:updateActiveSignatures:2:8
+
+Sub updateActiveSignatures()
+	On Error GoTo ErrorHandler
+	Dim sesCurrent As New NotesSession
+	Dim ndbCurrent As NotesDatabase
+	Dim ndbNab As NotesDatabase
+	
+	Dim viwProcess As NotesView
+	Dim viwNab As NotesView
+	
+	Dim docNext As NotesDocument
+	Dim docNab As NotesDocument
+	Dim docProcess As NotesDocument
+	Dim agtPush As NotesAgent
+	
+	Dim sigFactory As New SignaturFactory
+	Dim setCurrent As New Setup(sesCurrent)
+	Dim prodInfo As ProductInfoSM
+	Dim nCounter As Long
+	Dim nCounterStandard As Long
+	Dim nCounterReset As Long
+	Dim nCounterlocal As long
+	
+	Set ndbCurrent = sesCurrent.Currentdatabase
+	Set viwProcess = ndbCurrent.Getview("LUPSignatureActive")
+	Set agtPush = ndbCurrent.Getagent("aaBEPush2Mail")
+	Set prodInfo = setCurrent.getProductInfo()
+	
+	Set ndbNAB = sesCurrent.Getdatabase(ndbCurrent.Server,"names.nsf", False)
+	
+	Set viwNAB = ndbNAB.Getview("($Users)")
+	
+	Call WGCLI_LogEvent("Start - Lizenzen: " & prodInfo.getCount() & " - Verwendet: " & (prodInfo.getCount()-prodInfo.getUnusedCount()) & " - Frei: " & prodInfo.getUnusedCount() , 0, 1, Nothing)
+	
+	If UCase(setCurrent.getDirectoryServer()) = UCase(ndbCurrent.Server) Then
+		'check disclaimer only on ONE server
+		Call sigFactory.checkDisclaimerStatus()
+		'Call WGCLI_LogEvent("Status der Fusszeilen wurde aktualisiert", 0, 1, Nothing)
+	End if
+	nCounter = 0
+	nCounterStandard = 0
+	nCounterlocal = 0
+	Set docNext = viwProcess.Getfirstdocument()
+	While Not (docNext Is Nothing)
+		Set docProcess = docNext
+		Set docNext = viwProcess.Getnextdocument(docNext)
+		nCounter = nCounter + 1
+		If (nCounter < prodInfo.getCount() + 1) Then
+			If docProcess.Mailserver(0) = ndbCurrent.Server Then
+				'only process mail files on current server
+				Set docNAB = viwNab.GetDocumentByKey(docProcess.FullName(0), True)
+				If docNab Is Nothing Then
+					docProcess.Status = "1"
+					docProcess.NABNotFound = "1"
+					Call docProcess.save ( True, False, True )
+					Call WGCLI_LogEvent( docProcess.FullName(0) & " wurde im NAB nicht gefunden", 1, 1, docProcess)
+				Else
+					Call sigFactory.updateFromNAB(docProcess, docNab)
+					If (docProcess.individual(0) <> "1") Then
+						Call sigFactory.updateSignaturSchema(docProcess)
+						nCounterStandard = nCounterStandard + 1
+					End If
+					Call sigFactory.updateSignatureFields(docProcess)
+					Call docProcess.save(True,False,True)
+					Call agtPush.Runonserver(docProcess.Noteid)
+				End If
+				nCounterlocal = nCounterlocal + 1
+			End if
+		Else
+			Call WGCLI_LogEvent("Lizenzproblem:  " & docProcess.Nachname(0) &" "& docProcess.Vorname(0) & " konnte nicht verarbeitet werden", 2, 1, docProcess)
+		End If	
+	Wend
+	
+	'reset design changes on inactive signatures
+	nCounterReset = 0
+	Set viwProcess = ndbCurrent.Getview("LUPSignatureToReset")
+	Set docProcess = viwProcess.Getfirstdocument()
+	While Not (docProcess Is Nothing)
+		If docProcess.Mailserver(0) = ndbCurrent.Server Then
+			'only process mail files on current server
+			Call agtPush.Runonserver(docProcess.Noteid)
+			
+			'Call WGCLI_LogEvent("Reset Signature: " + docProcess.FullName(0), 1, 1, Nothing)
+			nCounterReset = nCounterReset + 1
+		End if
+		Set docProcess = viwProcess.Getfirstdocument()
+	Wend
+	
+	Call WGCLI_LogEvent("Ende - Verarbeitet: " & nCounterlocal & " / istStandard: " & nCounterStandard & " / Zurückgesetzt: " & nCounterReset, 0, 1, Nothing)
+	Exit Sub
+ErrorHandler:
+	Call WGCLI_LogError("Fehler in updateActiveSignatures", docProcess)
+	Exit Sub
+	
+End Sub
+
+
+'++LotusScript Development Environment:2:2:NABHousekeeping:1:8
+Sub NABHousekeeping()
+	On Error GoTo ErrorHandler
+	
+	Dim sesCurrent As New NotesSession
+	Dim ndbCurrent As NotesDatabase
+	Dim ndbNab As NotesDatabase	
+	Dim viwProcess As NotesView
+	Dim viwNab As NotesView	
+	Dim vecProcess As NotesViewEntryCollection
+	Dim docNext As NotesDocument
+	Dim docNab As NotesDocument
+	Dim docProcess As NotesDocument
+	Dim sigFactory As New SignaturFactory
+	Dim setCurrent As New Setup(sesCurrent)
+	Dim strSchema As String
+	Dim nCounterRemove As Long
+	Dim nCounterImport As Long
+	Dim arrResult As Variant
+	
+	Set ndbCurrent = sesCurrent.Currentdatabase
+	Set ndbNAB = sesCurrent.Getdatabase(setCurrent.getDirectoryServer(),"names.nsf", False)
+	
+	'check all existing signature documents if NAB entry exists
+	Set viwProcess = ndbCurrent.Getview("LUPSignatureByUser")
+	Set viwNAB = ndbNAB.Getview("($Users)")
+	
+	nCounterRemove = 0
+	
+	Set docNext = viwProcess.Getfirstdocument()
+	While Not (docNext Is Nothing)
+		Set docProcess = docNext
+		Set docNext = viwProcess.Getnextdocument(docNext)
+		
+		Set docNAB = viwNab.GetDocumentByKey(docProcess.FullName(0), True)
+		If docNab Is Nothing Then
+			'not found in NAB			
+			If docProcess.NABNotFound(0) <> "1" then
+				docProcess.Status = "1"
+				docProcess.NABNotFound = "1"
+				Call docProcess.save ( True, False, True )
+				Call WGCLI_LogEvent( docProcess.FullName(0) & " wurde im NAB nicht gefunden", 1, 1, docProcess)
+				nCounterRemove = nCounterRemove + 1
+			End If
+		Else
+			'found in NAB, check for criteria
+			If docProcess.IndividuallyAdded(0) <> "1" Then
+				'only if not added individually
+				If setCurrent.getImportFilterType = 0 Then
+					'import people based on group name(s)
+					
+					'check if user is in one of the allowed groups!
+					Dim membersToImport As Variant
+					Dim check
+					
+					'resolve all allowed groups to one array containing all SM members
+					call ExpandGroupNames(ndbNAB.Server, setCurrent.getGroupsToImport, membersToImport)
+						
+					check = ArrayGetIndex(  membersToImport, docProcess.FullName(0) , 5 )
+						
+					If IsNull(check) Then
+						'not found in any group
+						docProcess.Status = "1"
+						docProcess.NABNotFound = "1"
+						docProcess.Strategy = ""
+						Call docProcess.save ( True, False, True )
+						Call WGCLI_LogEvent( docProcess.FullName(0) & " nicht (mehr) in einer Importgruppe aufgelistet", 1, 1, docProcess)
+						nCounterRemove = nCounterRemove + 1
+					End If
+						
+				Else
+					'import people from view - using formula filter criteria
+					'selection criteria has changed
+					If setCurrent.getDirectoryRestriction() <> "" Then
+						arrResult = Evaluate(setCurrent.getDirectoryRestriction(),docNab)
+						If arrResult(0) = "0" Then
+							'does not match criteria
+							docProcess.Status = "1"
+							docProcess.NABNotFound = "1"
+							docProcess.Strategy = ""
+							Call docProcess.save ( True, False, True )
+							Call WGCLI_LogEvent( docProcess.FullName(0) & " entspricht nicht (mehr) den Importkriterien", 1, 1, docProcess)
+							nCounterRemove = nCounterRemove + 1	
+						Else
+							'matches criteria
+							docProcess.NABNotFound = ""
+							Call docProcess.save ( True, False, True )
+						End If
+					Else
+						If docProcess.NABNotFound(0) = "1" Then
+							docProcess.NABNotFound = ""
+							Call docProcess.save ( True, False, True )
+						End If
+					End If
+				End If
+			End if					
+		End If			
+	Wend
+		
+	'automatic import of NAB yes / no?
+	If setCurrent.getImportNAB = 1 Then
+		'check NAB if for every person to be imported a signature document exists
+		strSchema = setCurrent.getDefaultSchema()
+		nCounterImport = 0
+		nCounterImport = importNABexec ( strSchema, sesCurrent, setCurrent, sigFactory, nothing)
+		Call WGCLI_LogEvent("Housekeeping Summary: Removed: " & nCounterRemove & " / Added: " & nCounterImport, 0, 1, Nothing)
+	Else
+		Call WGCLI_LogEvent("Housekeeping Summary: Removed: " & nCounterRemove, 0, 1, Nothing)
+	End If
+	
+	'clean up of old documents
+	Set viwProcess = ndbCurrent.Getview("toDelete")
+	Set vecProcess = viwProcess.AllEntries
+	Call vecProcess.Removeall(True)
+	
+	Exit Sub
+ErrorHandler:
+	Call WGCLI_LogError("Fehler im NABHousekeeping", nothing)
+	Exit Sub
+End Sub

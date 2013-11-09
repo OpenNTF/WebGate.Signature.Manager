@@ -1,0 +1,140 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+%REM
+	Library Setup
+	Created Oct 21, 2010 by Christian Guedemann/WGC/CH
+	Description: Comments for Library
+%END REM
+Option Public
+Option Declare
+Use "ProductInfoSignatureManager"
+
+
+
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class Setup
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+%REM
+	Class Setup
+	Description: Comments for Class
+%END REM
+Public Class Setup
+	Private m_LogMode As Integer
+	Private m_SignMail As Integer
+	Private m_RecompileDesign As Integer
+	Private m_ImportNAB As Integer
+	Private m_ImportFilterType As Integer
+	Private m_GroupsToImport As Variant
+			
+	Private m_LogServerName As String
+	Private m_LogFilePath As String
+	Private m_DirectoryServer As String
+	Private m_DefaultSchema As String
+	Private m_SerialKey As String
+	Private m_DirectoryRestriction As String	
+	Private m_ProductInfo As ProductInfoSM
+	%REM
+		Sub New
+		Description: Comments for Sub
+	%END REM
+	Sub New (sesCurrent As NotesSession)
+		Dim ndbCurrent As NotesDatabase
+		Dim viwSetup As NotesView
+		Dim docSetup As NotesDocument
+		
+		Set ndbCurrent = sesCurrent.Currentdatabase
+		Set viwSetup = ndbCurrent.getView("lupSetup")
+		Set docSetup = viwSetup.Getfirstdocument()
+		If (docSetup Is Nothing) Then
+			m_LogMode = 2
+			m_LogServerName = ""
+			m_LogFilePath = ""
+			m_DirectoryServer = ndbCurrent.Server
+			m_DirectoryRestriction= ""
+			m_DefaultSchema = ""
+			m_SerialKey = ""			
+			m_signMail = 0
+			m_RecompileDesign = 0
+			m_ImportNAB = 0
+			m_ImportFilterType = 1		'defaults to formula
+			m_GroupsToImport = ""
+		Else
+			If docSetup.LogMode(0) <> "" then
+				m_LogMode = CInt(docSetup.LogMode(0))
+			End if
+			m_LogServerName = docSetup.LogServerName(0)
+			m_LogFilePath = docSetup.LogFilePath(0)
+			m_DirectoryServer = docSetup.DirectoryServer(0)
+			m_DirectoryRestriction = docSetup.DirectoryRestriction(0)
+			m_DefaultSchema = docSetup.DefaultSchema(0)
+			m_SerialKey = docSetup.SerialKey(0)
+			If docSetup.SignMail(0) <> "" then
+				m_signMail = CInt(docSetup.SignMail(0))
+			End if			
+			If docSetup.recompileDesign(0) <> "" then
+				m_RecompileDesign = CInt(docSetup.recompileDesign(0))
+			End If
+			If docSetup.ImportFromNAB(0) <> "" then
+				m_ImportNAB = CInt(docSetup.ImportFromNAB(0))
+			End If
+			If docSetup.ImportFilterType(0) <> "" then
+				m_ImportFilterType = CInt(docSetup.ImportFilterType(0))
+			End if
+			m_GroupsToImport = docSetup.GroupsToImport
+		End If
+		Set m_ProductInfo = New ProductInfoSM(ndbCurrent, m_SerialKey)
+	End Sub
+	
+	Public Function getLogMode As Integer
+		getLogMode = m_LogMode
+	End Function
+	
+	Public Function getSignMail As Integer
+		getSignMail = m_signMail
+	End Function
+	
+	Public Function recompileDesign As Integer
+		recompileDesign = m_RecompileDesign
+	End Function
+	
+	Public Function getImportNAB As Integer
+		getImportNAB = m_ImportNAB
+	End Function
+	
+	Public Function getImportFilterType As Integer
+		getImportFilterType = m_ImportFilterType
+	End Function
+	
+	Public Function getGroupsToImport As variant
+		getGroupsToImport = m_GroupsToImport
+	End Function
+	
+	Public Function getLogServerName As String
+		getLogServerName = m_LogServerName
+	End Function
+	
+	Public Function getLogFilePath As String
+		getLogFilePath = m_LogFilePath
+	End Function
+	
+	Public Function getDirectoryServer As String
+		getDirectoryServer = m_DirectoryServer
+	End Function
+	
+	Public Function getDefaultSchema As String
+		getDefaultSchema = m_DefaultSchema
+	End Function
+	
+	Public Function getSerialKey As String
+		getSerialKey = m_SerialKey
+	End Function
+	
+	Public Function getDirectoryRestriction As String
+		getDirectoryRestriction = m_DirectoryRestriction
+	End Function
+	
+	Public Function getProductInfo As ProductInfoSM
+		Set getProductInfo = m_ProductInfo
+	End function
+End Class

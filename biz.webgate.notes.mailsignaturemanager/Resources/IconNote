@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note default='true' class='icon' xmlns='http://www.lotus.com/dxl' version='9.0'
+ replicaid='C1257C1E002C398C'>
+<noteinfo noteid='112' unid='B6E3E1A9B84618B3C12576A50028682C' sequence='199'>
+<created><datetime>20100108T082121,08+01</datetime></created>
+<modified><datetime>20131109T090316,27+01</datetime></modified>
+<revised><datetime>20131109T090316,26+01</datetime></revised>
+<lastaccessed><datetime>20131109T090316,27+01</datetime></lastaccessed>
+<addedtofile><datetime>20131109T090303,58+01</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Marco Baumann/O=IDESO</name><name>CN=Peter Luder/O=IDESO</name><name
+>CN=Marco Baumann/O=IDESO</name><name>CN=Peter Luder/O=IDESO</name><name>CN=Marco Baumann/O=IDESO</name><name
+>CN=Peter Luder/O=IDESO</name><name>CN=Christian Guedemann/O=WGC/C=CH</name><name
+>CN=WGHub01/O=WGC/C=CH</name><name>CN=Martin Muheim/O=WGC/C=CH</name><name
+>CN=Christian Guedemann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name><name
+>CN=Christian Guedemann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name><name
+>CN=Christian Guedemann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name><name
+>CN=Christian Guedemann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name><name
+>CN=Christian Guedemann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name><name
+>CN=Christian Guedemann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name><name
+>CN=Christian Guedemann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name><name
+>CN=Christian Guedemann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name><name
+>CN=Christian Guedemann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name><name
+>CN=Christian Guedemann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name><name
+>CN=Christian Guedemann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name><name
+>CN=Christian Guedemann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name><name
+>CN=Christian Guedemann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name><name
+>CN=Christian Guedemann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name><name
+>CN=Christian Guedemann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name><name
+>CN=Christian Guedemann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name><name
+>CN=Christian Guedemann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name><name
+>CN=Christian Guedemann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name><name
+>CN=Christian Guedemann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name><name
+>CN=Christian Guedemann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name><name
+>CN=Christian Guedemann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name><name
+>CN=Christian Guedemann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name><name
+>CN=Christian Guedemann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name><name
+>CN=Christian Guedemann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name><name
+>CN=Christian Guedemann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name><name
+>CN=Christian Guedemann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name><name
+>CN=Christian Guedemann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name><name
+>CN=Christian Guedemann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name><name
+>CN=Christian Guedemann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name><name
+>CN=Christian Guedemann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name><name
+>CN=Christian Guedemann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name><name
+>CN=Marco Baumann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name><name
+>CN=Marco Baumann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name><name
+>CN=Marco Baumann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name><name
+>CN=Marco Baumann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name><name
+>CN=Peter Luder/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name><name>CN=Christian Guedemann/O=WGC/C=CH</name><name
+>CN=WGHub01/O=WGC/C=CH</name><name>CN=Marco Baumann/O=WGC/C=CH</name><name
+>CN=WGHub01/O=WGC/C=CH</name><name>CN=Marco Baumann/O=WGC/C=CH</name><name
+>CN=WGHub01/O=WGC/C=CH</name><name>CN=Marco Baumann/O=WGC/C=CH</name><name
+>CN=WGHub01/O=WGC/C=CH</name><name>CN=Marco Baumann/O=WGC/C=CH</name><name
+>CN=WGHub01/O=WGC/C=CH</name><name>CN=Christian Guedemann/O=WGC/C=CH</name></updatedby>
+<item name='$DefaultWebFrameset' sign='true'><text>sysFsWeb</text></item>
+<item name='IconBitmap' summary='true' sign='true'>
+<rawitemdata type='6'>
+AiAgAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAARERERERERERERERERERERERERERERERERERERERERERERERER
+ERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERER
+ERERERERERERERERERERERERERAREREREREREREREREREREQAREREREREREREREREREREQERERER
+EREREREREREREREAERERERERERERERERERERAAEQAAAAAAAAAAAAEREREQEAEREREREREREREAER
+EREAEAEREREREREREREAERAREBEAEAEQEQEREQEREBERARAREAAQEAAAABAAEQAREQARAREAEAEA
+EAEAEAEBEREQAQEREREBEBEREREAEREREQEAEREREREREREREBEREREQEBERERERERERERERERER
+EQAREREREREREREREREREREAAREREREREREREREREREREAEREREQEREREREREREREREAERERERER
+ERERERERERERABERERERERERERERERERERABERERERERERERERERERERERERERERERERERERERER
+ERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERER
+EREREREREREREREREREREREREQ==
+</rawitemdata></item>
+<item name='$DefaultFrameset' sign='true'><text>fsNotesMain</text></item>
+<item name='$TemplateFileName' sign='true'><text>CN=DEV10/O=WGCDEV/C=CH!!Development\SignatureManager\Signature.nsf</text></item>
+<item name='$TemplateServerName' sign='true'><text>CN=Marco Baumann/O=WGC/C=CH</text></item>
+<item name='$PIRCRefreshModTime' sign='true'><datetime dst='true'>20120815T160351,56+02</datetime></item>
+<item name='$TemplateModTime' sign='true'><datetime dst='true'>20120815T113752,66+02</datetime></item>
+<item name='$Flags'><text>JFZzSn47f</text></item>
+<item name='$FlagsNoRefresh' sign='true'><text/></item>
+<item name='$Daos'><text>0</text></item>
+<item name='$TITLE'><text>WGC Signature Manager
+#1blubber
+#2WGC.SignatureManager v2.2</text></item></note>
+

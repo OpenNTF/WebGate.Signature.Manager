@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="form" replicaid="C1257C1E002C398C" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="18a" sequence="14" unid="62BA40201F58E0E3C125770500522E60">
+<created><datetime dst="true">20100414T165738,24+02</datetime></created>
+<modified><datetime>20131109T090304,12+01</datetime></modified>
+<revised><datetime dst="true">20120815T160139,97+02</datetime></revised>
+<lastaccessed><datetime>20131109T090304,12+01</datetime></lastaccessed>
+<addedtofile><datetime>20131109T090304,12+01</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Marco Baumann/O=IDESO</name><name>CN=Christian Guedemann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name><name>CN=lpiic05p7/O=iic</name><name>CN=Marco Baumann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name></updatedby>
+<wassignedby><name>CN=WGHub01/O=WGC/C=CH</name></wassignedby>
+<item name="$FlagsExt" sign="true"><text>D</text></item>
+<item name="$ImagesWide" sign="true"><number>1</number></item>
+<item name="$ImagesHigh" sign="true"><number>1</number></item>
+<item name="$ImagesColorize" sign="true"><number>0</number></item>
+
+
+<item name="$MimeType" sign="true"><text>image/gif</text></item>
+<item name="$FileModDT" sign="true"><datetime dst="true">20100414T123754,00+02</datetime></item>
+<item name="$ImageNames" sign="true"><text>profile.gif</text></item>
+<item name="$TITLE" sign="true"><textlist><text>profile.gif</text><text>profile</text></textlist></item>
+<item name="$DesignerVersion" sign="true"><text>7</text></item>
+<item name="$Flags"><text>34CiQ</text></item>
+<item name="$CIAOOwner" sign="true"><text>CN=Peter Luder/O=WGC/C=CH</text></item>
+<item name="$CIAOTime" sign="true"><datetime dst="true">20110831T111324,59+02</datetime></item>
+<item name="$CIAOCheckOutTime" sign="true"><datetime dst="true">20120815T113700,37+02</datetime></item>
+<item name="$CIAOCheckOutComment" sign="true"><text>Design-Refresh von Version Legic</text></item></note>

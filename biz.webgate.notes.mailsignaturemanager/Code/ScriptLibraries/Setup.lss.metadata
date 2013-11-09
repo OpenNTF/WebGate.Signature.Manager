@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="C1257C1E002C398C" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="2ae" sequence="99" unid="90AB0730FAB95554C12577FA00703D36">
+<created><datetime>20101215T212557,02+01</datetime></created>
+<modified><datetime>20131109T090305,98+01</datetime></modified>
+<revised><datetime dst="true">20120815T160140,93+02</datetime></revised>
+<lastaccessed><datetime>20131109T090305,98+01</datetime></lastaccessed>
+<addedtofile><datetime>20131109T090305,98+01</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Christian Guedemann/O=WGC/C=CH</name><name>CN=Marco Baumann/O=WGC/C=CH</name><name>CN=lpiic05p7/O=iic</name><name>CN=Marco Baumann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name></updatedby>
+<wassignedby><name>CN=WGHub01/O=WGC/C=CH</name></wassignedby>
+<item name="$TITLE" sign="true"><text>Setup</text></item>
+<item name="$Flags"><text>s34Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+
+
+<item name="$CIAOOwner" sign="true"><text>CN=Peter Luder/O=WGC/C=CH</text></item>
+<item name="$CIAOTime" sign="true"><datetime dst="true">20110831T111326,29+02</datetime></item>
+<item name="$CIAOCheckOutTime" sign="true"><datetime dst="true">20120815T113701,21+02</datetime></item>
+<item name="$CIAOCheckOutComment" sign="true"><text>Design-Refresh von Version Legic</text></item>
+<item name="$POID"><datetime dst="true">20110831T111326,29+02</datetime></item></note>

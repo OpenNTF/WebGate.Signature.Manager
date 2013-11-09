@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='C1257C1E002C398C'>
+<noteinfo noteid='1b2' unid='3D35C98F6D8E38B6C12576DD00532914' sequence='83'>
+<created><datetime>20100305T160820,04+01</datetime></created>
+<modified><datetime>20131109T090304,31+01</datetime></modified>
+<revised><datetime dst='true'>20120815T160140,11+02</datetime></revised>
+<lastaccessed><datetime>20131109T090304,31+01</datetime></lastaccessed>
+<addedtofile><datetime>20131109T090304,31+01</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Lena Troxler/O=IDESO</name><name>CN=Pegasus/O=IDESO</name><name
+>CN=Marco Baumann/O=IDESO</name><name>CN=Christian Guedemann/O=WGC/C=CH</name><name
+>CN=WGHub01/O=WGC/C=CH</name><name>CN=Christian Guedemann/O=WGC/C=CH</name><name
+>CN=Marco Baumann/O=WGC/C=CH</name><name>CN=lpiic05p7/O=iic</name><name>CN=Marco Baumann/O=WGC/C=CH</name><name
+>CN=WGHub01/O=WGC/C=CH</name></updatedby>
+<wassignedby><name>CN=WGHub01/O=WGC/C=CH</name></wassignedby>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$TITLE' sign='true'><text>(Signaturen\Aktiv)|SignaturenAktiv</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+0AACAC4AAgAkMAUACgBtYWlsc2VydmVyAQACAHx8IgIFAAgAbWFpbGZpbGUiAgMAAgAsAAIAJDMF
+AAgATmFjaG5hbWUBAAEAIAAiAgUABwBWb3JuYW1lACICAwAFACIAHQAEAAIAAgAJAAQAJDAkMyRD
+b25mbGljdCRSRUYABAAEAAAAOAAFAAQARm9ybQEADwBTaWduYXR1cnByb2ZpbGUACgIFAAYAU3Rh
+dHVzAQABADAACgIcAgMABwAWABAACUwxUzJTM1M0UzVTNlM3Uw==
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+GAACAABEAGYAAAACAIBmAAIAAgAkMCQz
+</rawitemdata></item>
+<item name='$VIEWFORMAT' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQACAAQACEAAAFZDAQACABQAQAAAAIgAAQAACgAAAAAAAAAAAAICAAAAVkMBAAIAAAA+AAAAVQAB
+AAAKAAAAAAAAAAAAAgIAAAAkME1haWxzZXJ2ZXJ8fE1haWxmaWxlQAACAC4AAgAkMAUACgBtYWls
+c2VydmVyAQACAHx8IgIFAAgAbWFpbGZpbGUiAgMABwAQAAkACTFTMlMzUzRTACQzPgACACwAAgAk
+MwUACABOYWNobmFtZQEAAQAgACICBQAHAFZvcm5hbWUAIgIDAAcAEAAJAAkxUzJTM1M0UwAmAAEA
+AAABAQAJAQAACgEBDgoAAAEArSsBAAEAAQAAAAAAAAAAAFdDAQEACQAAAAAAAAAAAAAAAAAAAAAB
+AAAAAAAAAP//AAAAAAAAAAAAAAAAAABXQwEBAAkAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAD//wAA
+AAAAAAAAAAAAAAAAQgAQAAAAAQD///8ABQD///8AAQAAAAAAAAAAAAAAAAABAP///wABAP///wAA
+AAEAAAAAAAEAAAAAAAAAAAAAAAAACAAAAAAAAQA=
+</rawitemdata></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$Flags'><text>Y</text></item>
+<item name='$DesignerVersion' sign='true'><text>6.5</text></item>
+<item name='$V5ACTIONS' sign='true'>
+<rawitemdata type='1'>
+vRwjAAAAAQABAAAAAQAAAAAAAAAAAAAACAACAHn/bAABANTQyAABAAAAAAAJAAAAAAABANTQyAAA
+AB8AAAAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAPz/OgAAAAAAAQAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAEAAAAAAAAAAAAAAAAAAAC+/yYAAAAFAAAAnQEAAAsAAAAAAAAAQ2F0ZWdvcmlfemUA
+AQBOfL7/KAAAAAUAAACdAQAADgAAAAAAAABfRWRpdCBEb2N1bWVudAIAAgq+/ygAAAAFAAAAnQEA
+AA4AAAAAAAAAX1NlbmQgRG9jdW1lbnQDAAMKvv8iAAAABQAAAJ0BAAAIAAAAAAAAAF9Gb3J3YXJk
+BAAECr7/LAAAAAUAAACdAQAAEgAAAAAAAABfTW92ZSBUbyBGb2xkZXIuLi4FAD18vv8uAAAABQAA
+AJ0BAAATAAAAAAAAAF9SZW1vdmUgRnJvbSBGb2xkZXIyBgA+fA==
+</rawitemdata></item>
+<item name='$ACTIONS' sign='true'>
+<rawitemdata type='1'>
+vRwjAAAAAQABAAAAAQAAAAAAAAAAAAAACAACAL7/JgAAAAUAAACdAQAACwAAAAAAAABDYXRlZ29y
+aV96ZXEBAE58vv8oAAAABQAAAJ0BAAAOAAAAAAAAAF9FZGl0IERvY3VtZW50AgACCr7/KAAAAAUA
+AACdAQAADgAAAAAAAABfU2VuZCBEb2N1bWVudAMAAwq+/yIAAAAFAAAAnQEAAAgAAAAAAAAAX0Zv
+cndhcmQEAAQKvv8sAAAABQAAAJ0BAAASAAAAAAAAAF9Nb3ZlIFRvIEZvbGRlci4uLgUAPXy+/y4A
+AAAFAAAAnQEAABMAAAAAAAAAX1JlbW92ZSBGcm9tIEZvbGRlcgAGAD58
+</rawitemdata></item>
+<item name='$CIAOOwner' sign='true'><text>CN=Peter Luder/O=WGC/C=CH</text></item>
+<item name='$CIAOTime' sign='true'><datetime dst='true'>20110831T111324,77+02</datetime></item>
+<item name='$CIAOCheckOutTime' sign='true'><datetime dst='true'>20120815T113700,45+02</datetime></item>
+<item name='$CIAOCheckOutComment' sign='true'><text>Design-Refresh von Version Legic</text></item></note>
+

@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='C1257C1E002C398C'>
+<noteinfo noteid='1a2' unid='F3181EE636AD423BC12576DD00537C3F' sequence='85'>
+<created><datetime>20100305T161152,95+01</datetime></created>
+<modified><datetime>20131109T090304,23+01</datetime></modified>
+<revised><datetime dst='true'>20120815T160140,05+02</datetime></revised>
+<lastaccessed><datetime>20131109T090304,23+01</datetime></lastaccessed>
+<addedtofile><datetime>20131109T090304,23+01</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Marco Baumann/O=IDESO</name><name>CN=Christian Guedemann/O=WGC/C=CH</name><name
+>CN=WGHub01/O=WGC/C=CH</name><name>CN=Christian Guedemann/O=WGC/C=CH</name><name
+>CN=Marco Baumann/O=WGC/C=CH</name><name>CN=lpiic05p7/O=iic</name><name>CN=Marco Baumann/O=WGC/C=CH</name><name
+>CN=WGHub01/O=WGC/C=CH</name></updatedby>
+<wassignedby><name>CN=WGHub01/O=WGC/C=CH</name></wassignedby>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$TITLE' sign='true'><text>(Signaturen\by Key)|SignaturenByKey</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+hAACAC4AAgAkMAUACgBtYWlsc2VydmVyAQACAHx8IgIFAAgAbWFpbGZpbGUiAgMABQAeABkAAwAC
+AAkABAAkMCRDb25mbGljdCRSRUYABAAEAAAAJAAFAAQARm9ybQEADwBTaWduYXR1cnByb2ZpbGUA
+CgIDAAcADgAIAAlMMVMyUzNT
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+DwABAABEAGYAAAACACQw
+</rawitemdata></item>
+<item name='$VIEWFORMAT' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQABAAEACAAAAFZDAQACABQAQAAAAJABAQAACgAAAAAAAAAAAAICAAAAJDBNYWlsc2VydmVyfHxN
+YWlsZmlsZUAAAgAuAAIAJDAFAAoAbWFpbHNlcnZlcgEAAgB8fCICBQAIAG1haWxmaWxlIgIDAAcA
+EAAJAAkxUzJTM1M0UwAmAAEAAAABAQAJAQAACgEBDgoAAAEArSsBAAEAAQAAAAAAAAAAAFdDAQEA
+CQAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAP//AAAAAAAAAAAAAAAAAABCAAAAAAABAP///wAFAP//
+/wABAAAAAAAAAAAAAAAAAAEA////AAEA////AAAAAQAAAAAAAQAAAAAAAQAAAAAAAAAIAAAAAAAB
+AA==
+</rawitemdata></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$Flags'><text>Y</text></item>
+<item name='$DesignerVersion' sign='true'><text>7</text></item>
+<item name='$CIAOOwner' sign='true'><text>CN=Peter Luder/O=WGC/C=CH</text></item>
+<item name='$CIAOTime' sign='true'><datetime dst='true'>20110831T111324,69+02</datetime></item>
+<item name='$CIAOCheckOutTime' sign='true'><datetime dst='true'>20120815T113700,42+02</datetime></item>
+<item name='$CIAOCheckOutComment' sign='true'><text>Design-Refresh von Version Legic</text></item></note>
+

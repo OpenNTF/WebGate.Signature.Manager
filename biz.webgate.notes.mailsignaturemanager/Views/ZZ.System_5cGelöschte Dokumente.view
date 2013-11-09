@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='C1257C1E002C398C'>
+<noteinfo noteid='1ba' unid='883A0E964C26221BC12576AA004EA1A0' sequence='103'>
+<created><datetime>20100113T151851,84+01</datetime></created>
+<modified><datetime>20131109T090304,35+01</datetime></modified>
+<revised><datetime dst='true'>20120815T160140,17+02</datetime></revised>
+<lastaccessed><datetime>20131109T090304,35+01</datetime></lastaccessed>
+<addedtofile><datetime>20131109T090304,35+01</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Christian Guedemann/O=WGC/C=CH</name><name>CN=Marco Baumann/O=WGC/C=CH</name><name
+>CN=lpiic05p7/O=iic</name><name>CN=Marco Baumann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name></updatedby>
+<wassignedby><name>CN=WGHub01/O=WGC/C=CH</name></wassignedby>
+<item name='$FormatNote' summary='true' sign='true'>
+<rawitemdata type='4'>
+AQCyxr+q86Es58muJwBQaiXB
+</rawitemdata></item>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$Readers' sign='true' readers='true'><textlist><text>[DbAdmin]</text><text
+>[Server]</text></textlist></item>
+<item name='$TITLE' sign='true'><text>ZZ.System\Gelöschte Dokumente|$SoftDeleted</text></item>
+<item name='$Index' sign='true'><text>/C</text></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+lAACABQABABGb3JtBQAEAEZvcm0DAAIADAACACQwaQADAAIAIgACACQzBQAHAFN1YmplY3QAAAAA
+AAAAAABJQF8CAwAFACgAIwAFAAQAAgAEAAIACQBGb3JtJDBGb3JtJDMkQ29uZmxpY3QABAAEAAAA
+GAC/AFgBAAAAAAAAAMBjQA8CBAADAAcADAAFAAk1UzZTAA==
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+GgACAABEiGYHAAAEAAlmAAQAAgBGb3JtJDA=
+</rawitemdata></item>
+<item name='$VIEWFORMAT' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQAEAAMACkwAAFZDgwQEAAAAFgAAABAAAQGQCAABAAAAAAAAAAICAAAAVkMFAAIACAAOAAAA7AAB
+AAAIAAEAAAAAAAAAAgIAAABWQwAABAAEAAAAAABQAAEAAAgAAAAAAAAAAAACAgAAAFZDAAACAAcA
+NgAAAKAAAQAACAAAAAAAAAAAAAICAAAARm9ybRYAAgAUAAQARm9ybQUABABGb3JtAwAkMEBDcmVh
+dGVkDgACAAwAAgAkMGkAAwBGb3JtRm9ybSQzU3ViamVjdDYAAgAiAAIAJDMFAAcAU3ViamVjdAAA
+AAAAAAAAAElAXwIDAAcAEgALAAkxUzJTM1M0UzVTACYAAQAAAAEBAAkBAA4KAQEOCgAAAQCtKwkA
+AQABAAAAAAAAAAAAV0MBAb8IAAAAAAAAAAAAAAAAAAAAAAEAFAAAACwA//8AAAAAAAAAAAAAAAAA
+AFdDAQG/CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP//AAAAAAAAAAAAAAAAAABXQwEBvwgAAAAA
+AAAAAAAAAAAAAAAAAAAEAAAAAAD//wAAAAAAAAAAAAAAAAAAV0MBAb8IAAAAAAAAAAAAAAAAAAAA
+AAAABAAAAAAA//8AAAAAAAAAAAAAAAAAAEIAAAAAAAEA////AAUA////AAEAAAAAAAAAAAAAAAAA
+AQD///8AAQD///8AAAABAICAgAABAICAgAABAAAAAAAAAPb/KwAAAAAAAwATAAkAAAAAAAAAAAAA
+AAAAAAAAAAAAAABQbHVzTWludXM/CAAAAAAAAQA=
+</rawitemdata></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$Flags'><text>Yl</text></item>
+<item name='$DesignerVersion' sign='true'><text>8.5.2</text></item>
+<item name='$V5ACTIONS' sign='true'>
+<rawitemdata type='1'>
+vRwBAA8AAQABAAAAAQAAAAAAAAABAAAICAACAHn/bAABAP///wABAMDAwAABAAAAAAABAP///wAD
+ACMAAAAAAAAAAAADAAAAAAAAAAAAAAAAAACAQUACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAPz/OgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAEAAAAAAAAAAAAAAAAAAAC+/1YAAAABAAAAngEQAAgAAAAAAAAAVW5kZWxldGU4AAAA
+KgACAKIPAAAAAAAAAQATAChfU3lzdGVtXCRVbmRlbGV0ZSkA7QIDAAcADAAFAAkwUzBFAPb/KAAA
+AAAAAwATAAYAAAAAAAAAAAAAAAAAAAAAAAAAAABhY3Rpb26+/1wAAAABAAAAngEQAAsAAAAAAAAA
+SGFyZCBkZWxldGUAOgAAACwAAgCiDwAAAAAAAAEAFQAoX1N5c3RlbVwkSGFyZERlbGV0ZSkA7QID
+AAcADAAFAAkwUzBFAPb/KAAAAAAAAwATAAYAAAAAAAAAAAAAAAAAAAAAAAAAAABhY3Rpb24=
+</rawitemdata></item>
+<item name='$ACTIONS' sign='true'>
+<rawitemdata type='1'>
+vRwBAA8AAQABAAAAAQAAAAAAAAABAAAICAACAL7/VgAAAAEAAACeARAACAAAAAAAAABVbmRlbGV0
+ZTgAAAAqAAIAog8AAAAAAAABABMAKF9TeXN0ZW1cJFVuZGVsZXRlKQDtAgMABwAMAAUACTBTMEUA
+vv9cAAAAAQAAAJ4BEAALAAAAAAAAAEhhcmQgZGVsZXRlADoAAAAsAAIAog8AAAAAAAABABUAKF9T
+eXN0ZW1cJEhhcmREZWxldGUpAO0CAwAHAAwABQAJMFMwRQA=
+</rawitemdata></item>
+<item name='$CIAOOwner' sign='true'><text>CN=Peter Luder/O=WGC/C=CH</text></item>
+<item name='$CIAOTime' sign='true'><datetime dst='true'>20110831T111324,79+02</datetime></item>
+<item name='$CIAOCheckOutTime' sign='true'><datetime dst='true'>20120815T113700,48+02</datetime></item>
+<item name='$CIAOCheckOutComment' sign='true'><text>Design-Refresh von Version Legic</text></item></note>
+
