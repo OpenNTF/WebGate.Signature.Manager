@@ -1,14 +1,14 @@
 <?xml version='1.0' encoding='utf-8'?>
 <note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='C1257C1E002C398C'>
-<noteinfo noteid='48a' unid='114E58F82CD46EFDC12578CD003589D8' sequence='18'>
+<noteinfo noteid='48a' unid='114E58F82CD46EFDC12578CD003589D8' sequence='24'>
 <created><datetime dst='true'>20110714T114446,96+02</datetime></created>
-<modified><datetime>20131109T090308,80+01</datetime></modified>
-<revised><datetime dst='true'>20120815T160144,36+02</datetime></revised>
-<lastaccessed><datetime>20131109T090308,80+01</datetime></lastaccessed>
+<modified><datetime>20131109T095355,91+01</datetime></modified>
+<revised><datetime>20131109T095355,90+01</datetime></revised>
+<lastaccessed><datetime>20131109T095355,91+01</datetime></lastaccessed>
 <addedtofile><datetime>20131109T090308,80+01</datetime></addedtofile></noteinfo>
 <updatedby><name>CN=notes/O=iic</name><name>CN=Marco Baumann/O=WGC/C=CH</name><name
->CN=WGHub01/O=WGC/C=CH</name></updatedby>
-<wassignedby><name>CN=WGHub01/O=WGC/C=CH</name></wassignedby>
+>CN=WGHub01/O=WGC/C=CH</name><name>CN=Christian Guedemann/O=WGC/C=CH</name></updatedby>
+<wassignedby><name>CN=Christian Guedemann/O=WGC/C=CH</name></wassignedby>
 <item name='$FormulaClass' sign='true'><text>1</text></item>
 <item name='$TITLE' sign='true'><text>(embDisclaimer past)|embDisclaimerPast</text></item>
 <item name='$Index' sign='true'><text>/C</text></item>
@@ -72,6 +72,10 @@ ABMABgAAAAAAAAAAAAAAAAAAAAAAAAAAAGFjdGlvbg==
 vRwBAA8AAQABAAAAASAAAAAAAAABAAAICAACAL7/UgAAAAEAAACeQRAADgAAAAAAAABOZXVlIEZ1
 c3N6ZWlsZS4AAAAgAAIA6AMAAAAAAAABAAoARGlzY2xhaW1lcu0CAwAHAAwABQAJMFMwRQA=
 </rawitemdata></item>
+<item name='$CIAOOwner' sign='true'><text>CN=Peter Luder/O=WGC/C=CH</text></item>
+<item name='$CIAOTime' sign='true'><datetime dst='true'>20110831T111327,37+02</datetime></item>
+<item name='$CIAOCheckOutTime' sign='true'><datetime dst='true'>20120815T113701,57+02</datetime></item>
+<item name='$CIAOCheckOutComment' sign='true'><text>Design-Refresh von Version Legic</text></item>
 <item name='$ViewGlobalScript_O' sign='true'>
 <rawitemdata type='14'>
 AQAAAkxTT0IDABQIZW4AAAQAAAADAAAAAAAEAMQAAAAAAAAAAAAAAAAAAABgAP//VAAAAP////+Q
@@ -88,9 +92,5 @@ RQBSACAAUABBAFMAVAApAHwARQBNAEIARABJAFMAQwBMAEEAAACoAAMATgBFAFcAAAC8AAYARABF
 AEwARQBUAEUAAAAAAP//CgBJAE4ASQBUAEkAQQBMAEkAWgBFAAAAAAD//wkAVABFAFIATQBJAE4A
 QQBUAEUAAAD//wYATwBCAEoARQBDAFQAAAAAAP//AAAAAAAABQAIAAAAAABwRjwKBAAHAAAAAAAd
 AAACAAAAEQAQAAAAAAD//wEAAwADAAAABQAKAAAAAw==
-</rawitemdata></item>
-<item name='$CIAOOwner' sign='true'><text>CN=Peter Luder/O=WGC/C=CH</text></item>
-<item name='$CIAOTime' sign='true'><datetime dst='true'>20110831T111327,37+02</datetime></item>
-<item name='$CIAOCheckOutTime' sign='true'><datetime dst='true'>20120815T113701,57+02</datetime></item>
-<item name='$CIAOCheckOutComment' sign='true'><text>Design-Refresh von Version Legic</text></item></note>
+</rawitemdata></item></note>
 

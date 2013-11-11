@@ -20,8 +20,8 @@ Declare Sub createDisclaimer( strSchema As String, uiwCurrent As NotesUIWorkspac
 Declare Sub newSignature( strTemplate As String, uiwCurrent As NotesUIWorkspace, ndbCurrent As NotesDatabase, setCurrent As Setup, sigFactory As SignaturFactory)
 Declare Sub setRefresh(strTemplate As String, uiwCurrent As NotesUIWorkspace, ndbCurrent As NotesDatabase, sigFactory As SignaturFactory, dclSelect As NotesDocumentCollection)
 Declare function importNABexec ( strSchema As String, sesCurrent As NotesSession, setCurrent As Setup, sigFactory As SignaturFactory, uiwCurrent As NotesUIWorkspace) As long
-Declare private Sub zzzDoInsertSort ( sA() As String, ByVal bottom As Long, ByVal top As Long )	
 Declare Sub resetCalendarProfile ( uiwCurrent As NotesUIWorkspace, ndbCurrent As NotesDatabase )
+Declare private Sub zzzDoInsertSort ( sA() As String, ByVal bottom As Long, ByVal top As Long )	
 Declare Sub createSchema( uiwCurrent As NotesUIWorkspace,ndbCurrent As NotesDatabase)
 Declare Sub setNewSchema(strTemplate As String, uiwCurrent As NotesUIWorkspace, ndbCurrent As NotesDatabase, sigFactory As SignaturFactory, dclSelect As NotesDocumentCollection)
 
@@ -212,12 +212,6 @@ Sub setActive(strTemplate As String, uiwCurrent As NotesUIWorkspace, ndbCurrent 
 	If dclCurrent.count = 0 Then
 		Exit Sub
 	End If
-	Set prodInfo = setCurrent.getProductInfo()
-	If (dclCurrent.count > prodInfo.getUnusedCount()) Then
-		MessageBox "Aktuell können nur noch " & prodInfo.getUnusedCount() & " Signaturen aktiviert werden." & Chr(13) & "Sie wollen " &dclCurrent.Count & " Signatur(en) aktivieren.",0+48, ndbCurrent.Title
-		Exit Sub
-	End If
-	'Now check against the open Licence
 	Set docNext = dclCurrent.getFirstdocument
 	count = 0
 	While Not (docNext Is Nothing)
@@ -617,27 +611,6 @@ ErrorHandler:
 	Exit Function
 End function
 
-'++LotusScript Development Environment:2:2:zzzDoInsertSort:2:8
-
-private Sub zzzDoInsertSort ( sA() As String, ByVal bottom As Long, ByVal top As Long )	
-	Dim i As Long
-	Dim x As Long
-	Dim v As String
-	Dim Found As Integer
-	For i = bottom+1 To top
-		x = i
-		v = sA (i )
-		Do While (sA(x-1) > v)
-			sA ( x ) = sA ( x-1 )
-			x = x - 1
-			If x=0 Then
-				Exit Do
-			End If
-		Loop
-		sA (x) = v
-	Next
-End Sub
-
 '++LotusScript Development Environment:2:2:resetCalendarProfile:1:8
 Sub resetCalendarProfile ( uiwCurrent As NotesUIWorkspace, ndbCurrent As NotesDatabase )
 	
@@ -661,6 +634,27 @@ Sub resetCalendarProfile ( uiwCurrent As NotesUIWorkspace, ndbCurrent As NotesDa
 		MsgBox "Kalenderprofil zurückgesetzt", 0+64, ndbCurrent.Title
 	End If
 	
+End Sub
+
+'++LotusScript Development Environment:2:2:zzzDoInsertSort:2:8
+
+private Sub zzzDoInsertSort ( sA() As String, ByVal bottom As Long, ByVal top As Long )	
+	Dim i As Long
+	Dim x As Long
+	Dim v As String
+	Dim Found As Integer
+	For i = bottom+1 To top
+		x = i
+		v = sA (i )
+		Do While (sA(x-1) > v)
+			sA ( x ) = sA ( x-1 )
+			x = x - 1
+			If x=0 Then
+				Exit Do
+			End If
+		Loop
+		sA (x) = v
+	Next
 End Sub
 
 '++LotusScript Development Environment:2:2:createSchema:1:8

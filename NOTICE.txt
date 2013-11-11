@@ -1,0 +1,14 @@
+﻿OpenNTF WebGate Mail Signature Manager
+Copyright 2013 WebGate Consulting AG
+
+This product includes software contributed to 
+OpenNTF Alliance (http://www.OpenNTF.org/)
+
+
+List of third party software used in this project:
+
+- LotusScript Library OpenLogFunctions from the OpenLog 1.5 Project (http://www.openntf.org/Internal/home.nsf/project.xsp?action=openDocument&name=OpenLog) under Apache V2.0 (http://www.apache.org/licenses/)
+
+- Form "Calendar Profile" from the Project Mail (Mail85.nsft) (http://www.openntf.org/Internal/home.nsf/project.xsp?action=openDocument&name=Mail%20%28mail85.ntf%29) under Apache V2.0 (http://www.apache.org/licenses/)
+ 
+ 

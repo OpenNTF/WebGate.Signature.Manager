@@ -1,14 +1,15 @@
 <?xml version='1.0' encoding='utf-8'?>
 <note class='filter' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='C1257C1E002C398C'>
-<noteinfo noteid='1d2' unid='6350E7E5E4E9530CC12576B00056D787' sequence='26'>
+<noteinfo noteid='1d2' unid='6350E7E5E4E9530CC12576B00056D787' sequence='32'>
 <created><datetime>20100119T164832,71+01</datetime></created>
-<modified><datetime>20131109T090304,47+01</datetime></modified>
-<revised><datetime dst='true'>20110912T170159,58+02</datetime></revised>
-<lastaccessed><datetime>20131109T090304,47+01</datetime></lastaccessed>
+<modified><datetime>20131109T095355,47+01</datetime></modified>
+<revised><datetime>20131109T095355,46+01</datetime></revised>
+<lastaccessed><datetime>20131109T095355,47+01</datetime></lastaccessed>
 <addedtofile><datetime>20131109T090304,47+01</datetime></addedtofile></noteinfo>
 <updatedby><name>CN=Marco Baumann/O=WGC/C=CH</name><name>CN=lpiic05p7/O=iic</name><name
->CN=Marco Baumann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name></updatedby>
-<wassignedby><name>CN=WGHub01/O=WGC/C=CH</name></wassignedby>
+>CN=Marco Baumann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name><name
+>CN=Christian Guedemann/O=WGC/C=CH</name></updatedby>
+<wassignedby><name>CN=Christian Guedemann/O=WGC/C=CH</name></wassignedby>
 <item name='$TITLE' sign='true'><text>(Admin\Remove Profiles)</text></item>
 <item name='$AssistType' sign='true'><number>65413</number></item>
 <item name='$AssistLastRun' sign='true'>
@@ -69,6 +70,7 @@ Y2h0aWd1bmcuIEJpdHRlIGtvbnRha3RpZXJlbiBTaWUgZWluZW4gQWRtaW5pc3RyYXRvciIsIDAr
 MTYsIGRiLlRpdGxlCgkJRXhpdCBTdWIKCUVuZCBJZgoJCglTZXQgZGMgPSBkYi5HZXRQcm9maWxl
 RG9jQ29sbGVjdGlvbgoJCglDYWxsIGRjLlJlbW92ZUFsbCAoIFRydWUgKQoJCkVuZCBTdWIA
 </rawitemdata></item>
+<item name='$POID'><datetime dst='true'>20110831T111324,89+02</datetime></item>
 <item name='$AssistAction_Ex' sign='true'>
 <rawitemdata type='14'>
 gQKF/zwJAAAAADAJAAABAAACTFNPQgMAFAhlbgAABAAQAG8AAAAoAKwDqAIEAAAAAACcAEwCAAAA
@@ -112,8 +114,7 @@ CBIAFAAAAAAAlAIKAAAAAAA8BQAAAABMApwA//8AAAAABAACAAAACgAJAkwCAQgZABQAAAAmAAAK
 BABzAAAAAAAdAAAaDQBeaAErqAAkphoSAF48AktoAS38AiOmGhQAXuwCgNSkA6UaFgCFZewCAX3E
 Abs4FwAaFwB9zAGbjhBLPAItIAMjmwYHGhgAHBoZABobAF7cAks8AixEA4sII6YaHQBL3AIsdAOE
 IxofAB0HACwAAAAAACYAAAAYAAEACQBbRGJBZG1pbl0A5wB0AgMABwAMAAUACTNTNFMAAAACAAAA
-EQAUAAAAAAD//wEAAwAFAAAACABEAAoACgAAAP8=
+EQAUAAAAAAD//wEAAwAFAAAACABEAAoACgAAAAA=
 </rawitemdata></item>
-<item name='$POID'><datetime dst='true'>20110831T111324,89+02</datetime></item>
-<item name='$AssistVersion'><datetime dst='true'>20110912T170159,24+02</datetime></item></note>
+<item name='$AssistVersion'><datetime>20131109T095355,46+01</datetime></item></note>
 

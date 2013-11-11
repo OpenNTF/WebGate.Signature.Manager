@@ -1,14 +1,15 @@
 <?xml version='1.0' encoding='utf-8'?>
 <note class='filter' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='C1257C1E002C398C'>
-<noteinfo noteid='322' unid='BA38B6A4DF4D1368C12577FF004F2BF3' sequence='19'>
+<noteinfo noteid='322' unid='BA38B6A4DF4D1368C12577FF004F2BF3' sequence='25'>
 <created><datetime>20101220T152445,95+01</datetime></created>
-<modified><datetime>20131109T090306,73+01</datetime></modified>
-<revised><datetime dst='true'>20110912T170200,88+02</datetime></revised>
-<lastaccessed><datetime>20131109T090306,73+01</datetime></lastaccessed>
+<modified><datetime>20131109T095355,38+01</datetime></modified>
+<revised><datetime>20131109T095355,37+01</datetime></revised>
+<lastaccessed><datetime>20131109T095355,38+01</datetime></lastaccessed>
 <addedtofile><datetime>20131109T090306,73+01</datetime></addedtofile></noteinfo>
 <updatedby><name>CN=Marco Baumann/O=WGC/C=CH</name><name>CN=lpiic05p7/O=iic</name><name
->CN=Marco Baumann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name></updatedby>
-<wassignedby><name>CN=WGHub01/O=WGC/C=CH</name></wassignedby>
+>CN=Marco Baumann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name><name
+>CN=Christian Guedemann/O=WGC/C=CH</name></updatedby>
+<wassignedby><name>CN=Christian Guedemann/O=WGC/C=CH</name></wassignedby>
 <item name='$TITLE' sign='true'><text>(aaUIProductInfo)|aaUIProductInfo</text></item>
 <item name='$AssistType' sign='true'><number>65413</number></item>
 <item name='$AssistLastRun' sign='true'>
@@ -34,11 +35,11 @@ gQYAAAAA
 <item name='$AssistRunInfo' summary='true'>
 <rawitemdata type='3'>
 BgAAAgAACAAeAwAAAAAAAAUAAAAwAAAAAAAAAAAAAAAAAAAAugAAAAAAAAAAAAAAAAAAABAAAAAA
-AAAApTVEAMx7JcEAAAAA+ZRSAAl5JcFyVCMA4HclwQAAAAAAAAAAAAAAAAAAAAAAAAAAU3RhcnRl
-ZCBydW5uaW5nIGFnZW50ICcoYWFVSVByb2R1Y3RJbmZvKXxhYVVJUHJvZHVjdEluZm8nIG9uIDE5
-LjA4LjIwMTMgMTQ6MjQ6NDANClJhbiBMb3R1c1NjcmlwdCBjb2RlDQpEb25lIHJ1bm5pbmcgYWdl
-bnQgJyhhYVVJUHJvZHVjdEluZm8pfGFhVUlQcm9kdWN0SW5mbycgb24gMTkuMDguMjAxMyAxNDoy
-NTowMQ0KAA0KnBYFC2g1ZDw1H1IAoXglwVIAoXglwaqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+AAAAk+Q3AB58JcEAAAAA0uEwAB58JcGMOSwAHnwlwQAAAAAAAAAAAAAAAAAAAAAAAAAAU3RhcnRl
+ZCBydW5uaW5nIGFnZW50ICcoYWFVSVByb2R1Y3RJbmZvKXxhYVVJUHJvZHVjdEluZm8nIG9uIDA5
+LjExLjIwMTMgMTE6MTA6MjYNClJhbiBMb3R1c1NjcmlwdCBjb2RlDQpEb25lIHJ1bm5pbmcgYWdl
+bnQgJyhhYVVJUHJvZHVjdEluZm8pfGFhVUlQcm9kdWN0SW5mbycgb24gMDkuMTEuMjAxMyAxMTox
+MDoyOQ0KAA0KnBYFC2g1ZDw1H1IAoXglwVIAoXglwaqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
 qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
 qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
 qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
@@ -67,6 +68,7 @@ ZW50LmN1cnJlbnREYXRhYmFzZQoJCglDYWxsIHVpd0N1cnJlbnQuRGlhbG9nYm94KCJkbGdTeXNE
 YkluZm8iLCB0cnVlLCB0cnVlLCB0cnVlLCB0cnVlLHRydWUsIHRydWUsIG5kYkN1cnJlbnQuVGl0
 bGUsbmRiQ3VycmVudC5DcmVhdGVkb2N1bWVudCgpLCB0cnVlKQpFbmQgU3ViAA==
 </rawitemdata></item>
+<item name='$POID'><datetime dst='true'>20110831T111326,65+02</datetime></item>
 <item name='$AssistAction_Ex' sign='true'>
 <rawitemdata type='14'>
 gQKF/2YJAAAAAFoJAAABAAACTFNPQgMAFAhlbgAABAASAFIAAAAAAKgEJAIEAAAAAAB4AeQDAAAA
@@ -113,6 +115,5 @@ CQJUAhkABABWAAAAAAAdAAAaDABeaAErqAAkphoNAF5EAiuEASSmGhAAXhgDS0QCLSgDI6YaEgBL
 aAEsTAN9tAGCgoKCgoJLGAMtkAMjSxgDLLQDI4KLAIsAIzEaEwAdAgAAABEAFAAAAAAA//8BAAMA
 BQAAAAgARAAKAAoAAAA=
 </rawitemdata></item>
-<item name='$POID'><datetime dst='true'>20110831T111326,65+02</datetime></item>
-<item name='$AssistVersion'><datetime dst='true'>20110912T170159,98+02</datetime></item></note>
+<item name='$AssistVersion'><datetime>20131109T095355,36+01</datetime></item></note>
 

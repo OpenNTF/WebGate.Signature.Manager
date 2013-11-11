@@ -1,13 +1,14 @@
 <?xml version='1.0' encoding='utf-8'?>
 <note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='C1257C1E002C398C'>
-<noteinfo noteid='3fe' unid='F45C458EDB08DE92C125789B003B9125' sequence='21'>
+<noteinfo noteid='3fe' unid='F45C458EDB08DE92C125789B003B9125' sequence='27'>
 <created><datetime dst='true'>20110525T125037,81+02</datetime></created>
-<modified><datetime>20131109T090307,93+01</datetime></modified>
-<revised><datetime dst='true'>20120815T160141,69+02</datetime></revised>
-<lastaccessed><datetime>20131109T090307,93+01</datetime></lastaccessed>
+<modified><datetime>20131109T095355,83+01</datetime></modified>
+<revised><datetime>20131109T095355,82+01</datetime></revised>
+<lastaccessed><datetime>20131109T095355,83+01</datetime></lastaccessed>
 <addedtofile><datetime>20131109T090307,93+01</datetime></addedtofile></noteinfo>
-<updatedby><name>CN=Marco Baumann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name></updatedby>
-<wassignedby><name>CN=WGHub01/O=WGC/C=CH</name></wassignedby>
+<updatedby><name>CN=Marco Baumann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name><name
+>CN=Christian Guedemann/O=WGC/C=CH</name></updatedby>
+<wassignedby><name>CN=Christian Guedemann/O=WGC/C=CH</name></wassignedby>
 <item name='UpdateFlag' summary='false' sign='true'><number>0</number></item>
 <item name='$HTMLCode' sign='true'>
 <rawitemdata type='1'>
@@ -25,7 +26,6 @@ hhgBAIAAAAAAgAAAAQABAP///wAAAAAA
 <rawitemdata type='1'>
 i/8oAAEABSZBcmlhbAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==
 </rawitemdata></item>
-<item name='$$ScriptName' summary='false' sign='true'><text>sfrmHeaderSignatureProfile</text></item>
 <item name='DeleteFlag' placeholder='true'>
 <rawitemdata type='0'>
 </rawitemdata></item>
@@ -82,6 +82,11 @@ AAAAAAAAAAA=
 >LastModifiedAt</text><text>LastModifiedBy</text><text>CreatedAt</text><text
 >Creator</text><text>Authors</text><text>EditDates</text><text>DocKey</text><text
 >ArchivFlag</text><text>DeletedFrom</text><text>DeleteFlag</text></textlist></item>
+<item name='$CIAOOwner' sign='true'><text>CN=Peter Luder/O=WGC/C=CH</text></item>
+<item name='$CIAOTime' sign='true'><datetime>20111205T163643,35+01</datetime></item>
+<item name='$CIAOCheckOutTime' sign='true'><datetime dst='true'>20120815T113701,51+02</datetime></item>
+<item name='$CIAOCheckOutComment' sign='true'><text>Design-Refresh von Version Legic</text></item>
+<item name='$$ScriptName' summary='false' sign='true'><text>sfrmHeaderSignatureProfile</text></item>
 <item name='$Body' sign='true'>
 <rawitemdata type='1'>
 gQKC/1oAAQAAAAAAAAAAAIkFAACJBQEABBoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -330,9 +335,5 @@ iv+F/wgAAQAACtEGAAAAAIECgwQWAN0GAACF/4X/FQABAAIJPCEtIGhpZGRlbiAtPgDSCAEA/wAA
 AN4GAACF/9MIAQD///8AeP8vAAAAAAADABMADQAAAAAAAAAAAAAAAAAAAAAAAAAAAHNlYXJjaC1i
 Zy5qcGcA7v8KAAEAAAAAAKUGAAAAAIECgwQSAN0GAACF/4X/FQABAAIJPCEtIGhpZGRlbiAtPgDS
 CAEA/wAAAN4GAACF/w==
-</rawitemdata></item>
-<item name='$CIAOOwner' sign='true'><text>CN=Peter Luder/O=WGC/C=CH</text></item>
-<item name='$CIAOTime' sign='true'><datetime>20111205T163643,35+01</datetime></item>
-<item name='$CIAOCheckOutTime' sign='true'><datetime dst='true'>20120815T113701,51+02</datetime></item>
-<item name='$CIAOCheckOutComment' sign='true'><text>Design-Refresh von Version Legic</text></item></note>
+</rawitemdata></item></note>
 

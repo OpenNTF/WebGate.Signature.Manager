@@ -1,13 +1,27 @@
 '++LotusScript Development Environment:2:5:(Options):0:74
+%REM
+ * © Copyright WebGate Consulting AG, 2013
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * you may Not Use this file except In compliance With the License. 
+ * You may obtain a copy of the License at:
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law Or agreed To In writing, software 
+ * distributed under the License Is distributed On an "AS IS" BASIS, 
+ * WITHOUT WARRANTIES Or CONDITIONS OF Any KIND, either express Or 
+ * implied. See the License For the specific language governing 
+ * permissions And limitations under the License.
+ %END REM
+
 Option Public
 Option Declare
 Use "WGCLogIncubinator"
 Use "SignaturFactory"
-Use "libAPIContainer"
 
 '++LotusScript Development Environment:2:5:(Forward):0:1
 Declare Private Sub checkCalendarProfile( docCurrent As NotesDocument, docDXL As NotesDocument, ndbMail As NotesDatabase)
-Declare Private Sub recompileNewForm( sesCurrent As NotesSession, ndbMail As NotesDatabase )
 Declare Private Function isContentIdentical (docMailProfile As NotesDocument, docCurrent As NotesDocument) As Boolean
 Declare Private Function fixRefresh (ndbMail As NotesDatabase) As Boolean
 Declare Private Sub makeBackupXML ( docDOM As NotesDOMDocumentNode )
@@ -22,11 +36,13 @@ Declare Private Function getFormVersion (ndbMail As NotesDatabase) As string
 Declare Private Sub importNewForm( sesCurrent As NotesSession, ndbMail As NotesDatabase, docDXL As NotesDocument, strFile As String, action As String)
 
 '++LotusScript Development Environment:2:5:(Declarations):0:10
+
 Dim strSeparator As String
 Dim version As String
 Dim language As String
 Dim logStart As String
 Dim action As String
+
 
 '++LotusScript Development Environment:2:2:checkCalendarProfile:1:8
 Private Sub checkCalendarProfile( docCurrent As NotesDocument, docDXL As NotesDocument, ndbMail As NotesDatabase)
@@ -157,48 +173,6 @@ cleanup:
 ErrorHandler:
 	Call WGCLI_LogError("Error in checkCalendarProfile (" & CStr(Erl) & ")", docCurrent)
 	Exit Sub
-End Sub
-
-'++LotusScript Development Environment:2:2:recompileNewForm:1:8
-Private Sub recompileNewForm( sesCurrent As NotesSession, ndbMail As NotesDatabase )
-	On Error GoTo ErrorHandler
-	
-	Call WGCLI_LogEvent(logStart + " - start routine 'recompileNewForm'" , 1, 3, Nothing)
-	
-	Dim nnCCurrent As NotesNoteCollection
-	Dim docForm As NotesDocument
-	Dim sTitleU As String
-	
-	Dim recompiler As New LotusScriptRecompiler
-	Call recompiler.OpenDatabase(ndbMail)
-	
-	Set nncCurrent = ndbMail.Createnotecollection(False)
-	nnCCurrent.Selectforms = True
-	Call nnCCurrent.Buildcollection()
-	
-	Dim noteID As String
-	noteID = nnCCurrent.GetFirstNoteId
-	Do Until (noteID = "")
-		Set docForm = ndbMail.GetDocumentByID(noteID)
-		sTitleU = UCase(recompiler.GetTitle(docForm))
-		
-		If InStr(1,Implode(docForm.Getitemvalue("$Title"),"|"),"CalendarProfile") > 0 And InStr(1,Implode(docForm.Getitemvalue("$Title"),"|"),"CalendarProfile.backup") = 0 Then
-			If recompiler.RecompileLSByNoteID(noteID) Then
-				Call WGCLI_LogEvent("Successfully recompiled Calendar Profile on " & sesCurrent.Platform, 0, 0, Nothing)
-			Else
-				Call WGCLI_LogError(recompiler.GetLastError, Nothing)
-				Exit Sub
-			End If				
-		End If
-		
-		noteID = nnCCurrent.GetNextNoteId(noteID)
-	Loop
-	Call recompiler.CloseDatabase()
-	Exit Sub
-ErrorHandler:
-	
-	Call WGCLI_LogError("recompileNewForm (" & CStr(Erl) & ")", Nothing)
-	Exit Sub	
 End Sub
 
 '++LotusScript Development Environment:2:1:isContentIdentical:1:8

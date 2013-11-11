@@ -1,14 +1,15 @@
 <?xml version='1.0' encoding='utf-8'?>
 <note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='C1257C1E002C398C'>
-<noteinfo noteid='40e' unid='201C30AD4C989127C125788C004432E2' sequence='24'>
+<noteinfo noteid='40e' unid='201C30AD4C989127C125788C004432E2' sequence='30'>
 <created><datetime dst='true'>20110510T142454,74+02</datetime></created>
-<modified><datetime>20131109T090308,01+01</datetime></modified>
-<revised><datetime dst='true'>20120815T160141,61+02</datetime></revised>
-<lastaccessed><datetime>20131109T090308,01+01</datetime></lastaccessed>
+<modified><datetime>20131109T095356,63+01</datetime></modified>
+<revised><datetime>20131109T095356,62+01</datetime></revised>
+<lastaccessed><datetime>20131109T095356,63+01</datetime></lastaccessed>
 <addedtofile><datetime>20131109T090308,01+01</datetime></addedtofile></noteinfo>
 <updatedby><name>CN=notes/O=iic</name><name>CN=lpiic05p7/O=iic</name><name
->CN=Marco Baumann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name></updatedby>
-<wassignedby><name>CN=WGHub01/O=WGC/C=CH</name></wassignedby>
+>CN=Marco Baumann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name><name
+>CN=Christian Guedemann/O=WGC/C=CH</name></updatedby>
+<wassignedby><name>CN=Christian Guedemann/O=WGC/C=CH</name></wassignedby>
 <item name='$FormatNote' summary='true' sign='true'>
 <rawitemdata type='4'>
 AQDS2psDuPSP8onHRACBciXB

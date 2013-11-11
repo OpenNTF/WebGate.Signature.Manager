@@ -1,13 +1,14 @@
 <?xml version='1.0' encoding='utf-8'?>
 <note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='C1257C1E002C398C'>
-<noteinfo noteid='47a' unid='899E2AC2FB472EA9C12578E90039ABBF' sequence='14'>
+<noteinfo noteid='47a' unid='899E2AC2FB472EA9C12578E90039ABBF' sequence='20'>
 <created><datetime dst='true'>20110811T122955,19+02</datetime></created>
-<modified><datetime>20131109T090308,71+01</datetime></modified>
-<revised><datetime dst='true'>20120815T160144,32+02</datetime></revised>
-<lastaccessed><datetime>20131109T090308,71+01</datetime></lastaccessed>
+<modified><datetime>20131109T095356,57+01</datetime></modified>
+<revised><datetime>20131109T095356,56+01</datetime></revised>
+<lastaccessed><datetime>20131109T095356,57+01</datetime></lastaccessed>
 <addedtofile><datetime>20131109T090308,71+01</datetime></addedtofile></noteinfo>
-<updatedby><name>CN=Marco Baumann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name></updatedby>
-<wassignedby><name>CN=WGHub01/O=WGC/C=CH</name></wassignedby>
+<updatedby><name>CN=Marco Baumann/O=WGC/C=CH</name><name>CN=WGHub01/O=WGC/C=CH</name><name
+>CN=Christian Guedemann/O=WGC/C=CH</name></updatedby>
+<wassignedby><name>CN=Christian Guedemann/O=WGC/C=CH</name></wassignedby>
 <item name='$FormulaClass' sign='true'><text>1</text></item>
 <item name='$SourceSeqTime' sign='true'><datetime dst='true'>20110811T122955,20+02</datetime></item>
 <item name='$SourceSequence' sign='true'><text>00000001</text></item>
