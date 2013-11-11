@@ -31,8 +31,8 @@ Declare Private Function zzzGetDesignUpdateDefinition ( db As NotesDatabase ) As
 Declare Private Sub pushSignatureContent ( docSignature As NotesDocument, sesCurrent As NotesSession, ndbMail As NotesDatabase )	
 Declare Sub launchProcess ( docSignature As NotesDocument, sesCurrent As NotesSession )
 Declare Private Sub designRefresh( docDXL As NotesDocument, ndbMail As NotesDatabase)
+Declare Private Function getFormVersion (ndbMail As NotesDatabase) As String
 Declare Private Function zzzGetVersionField ( db As NotesDatabase ) As NotesDocument
-Declare Private Function getFormVersion (ndbMail As NotesDatabase) As string
 Declare Private Sub importNewForm( sesCurrent As NotesSession, ndbMail As NotesDatabase, docDXL As NotesDocument, strFile As String, action As String)
 
 '++LotusScript Development Environment:2:5:(Declarations):0:10
@@ -43,8 +43,8 @@ Dim language As String
 Dim logStart As String
 Dim action As String
 
+'++LotusScript Development Environment:2:2:checkCalendarProfile:2:8
 
-'++LotusScript Development Environment:2:2:checkCalendarProfile:1:8
 Private Sub checkCalendarProfile( docCurrent As NotesDocument, docDXL As NotesDocument, ndbMail As NotesDatabase)
 	On Error GoTo ErrorHandler
 	
@@ -138,14 +138,10 @@ Private Sub checkCalendarProfile( docCurrent As NotesDocument, docDXL As NotesDo
 	Call dxlExporter.Process
 	Call streamCurrent.Close()
 	
-	Call transformXMLFile(sesCurrent, strPath, action)
+	Call transformXMLFile(sesCurrent, strPath, action)		'copy existing CalenderProfile to CalendarProfile.backup
 	
-	Call importNewForm(sesCurrent, ndbMail, docDXL, strPath, action)
-	
-'	If setCurrent.recompileDesign() = 1 Then
-'		Call recompileNewForm( sesCurrent, ndbMail)
-'	End If
-	
+	Call importNewForm(sesCurrent, ndbMail, docDXL, strPath, action)	'create new CalendarProfile from DFXL Definition document
+
 	If action <> "push" Then
 		'remove old backup copy of calendar profile
 		Call docForm.Remove ( True )
@@ -390,7 +386,7 @@ Private Function zzzGetDesignUpdateDefinition ( db As NotesDatabase ) As NotesDo
 	If docDXL Is Nothing Then
 		Set zzzGetDesignUpdateDefinition = Nothing
 		
-		Call WGCLI_LogEvent(logStart + " - no DXL Import Definition for this version: " & key , 2, 0, Nothing)
+		Call WGCLI_LogEvent(logStart + " - No Design Definition for this version: " & key , 2, 0, Nothing)
 		Exit Function
 	End If
 	
@@ -420,7 +416,7 @@ Private Sub pushSignatureContent ( docSignature As NotesDocument, sesCurrent As 
 	If (action = "push") Then		
 		strSignatur = docSignature.Signatur(0)
 		
-		If Left(version,3) = "8.5" Or Left(version,1) = "9" Then	'04.2013, MBA: added support for LN9
+		If Left(version,3) = "8.5" Or Left(version,1) = "9" Then
 			'Post Notes 8.5 Rich Text Signatur
 			
 			Set rtiProfile = docMailProfile.getFirstItem("Signature_Rich")
@@ -459,7 +455,7 @@ Private Sub pushSignatureContent ( docSignature As NotesDocument, sesCurrent As 
 				'Print "Value and Size identical => no change"
 				toSave = False
 			End If			
-		Else		'if not 8.5.x
+		Else		'if not 8.5.x or 9.x
 			If docSignature.ForceUpdate(0) = "1" Or (strSignatur <> docMailProfile.Signature(0)) Then
 				docMailProfile.SignatureOption = "1"		'activate Plain Text Signature				
 				docMailProfile.Signature_1 = strSignatur
@@ -496,7 +492,7 @@ Private Sub pushSignatureContent ( docSignature As NotesDocument, sesCurrent As 
 		docMailProfile.Signature_1 = ""
 		docMailProfile.Signature = ""
 		
-		If Left(version,3) = "8.5" Then
+		If Left(version,3) = "8.5" Or Left(version,1) = "9" Then
 			'Post Notes 8.5 Rich Text Signatur
 			'remove formatted richtext signature
 			Call docMailProfile.RemoveItem("Signature_Rich")
@@ -509,7 +505,7 @@ Private Sub pushSignatureContent ( docSignature As NotesDocument, sesCurrent As 
 			Call docDwaProfile.ReplaceItemValue("HTMLSignature", "")
 			Call docDwaProfile.ReplaceItemValue("SignatureType", "2")
 			Call docDwaProfile.save ( True, False, True )
-		Else	'if not 8.5.x
+		Else	'if not 8.5.x or 9.x
 			docMailProfile.SignatureOption = "1"		'activate Plain Text Signature
 		End If
 		
@@ -553,15 +549,23 @@ Sub launchProcess ( docSignature As NotesDocument, sesCurrent As NotesSession )
 		Exit Sub
 	End If
 	
+	'get exact version of mail file
 	Set docVersion = zzzGetVersionField ( ndbMail )
 	version = docVersion.~$TemplateBuild(0)
 	language = UCase(docVersion.~$Language(0))
 	logStart = ndbMail.Title + " (" + version + " " + language + ")"
 	
-	'go ahead with design update
+	FormVersion = ""
+	FormLanguage = ""
 	
+	'get dxl definition for mail file version		
 	Set docDXL = zzzGetDesignUpdateDefinition ( docSignature.ParentDatabase )
 	If docDXL Is Nothing Then
+		'no action at all if there is no definition for current mail file version
+		docSignature.Status = "1"
+		docSignature.transmit = "0"
+		docSignature.transmitReason = "No Design Definition for this mail file version"
+		Call docSignature.Save(True, False, True)
 		Exit Sub
 	End If
 	
@@ -570,21 +574,27 @@ Sub launchProcess ( docSignature As NotesDocument, sesCurrent As NotesSession )
 		'active => check if mail template has changed
 		
 		'get version and language of the CalendarProfile form
-		'and compare it to the version and language stored in the sigman document
+		'and compare it to the version and language stored in the signature manager document
 		If docDXL.Strategy(0) = "DXL" Then	
 			Call WGCLI_LogEvent(logStart + " - DXL Strategy" , 1, 3, Nothing)
-			curDesign = getFormVersion ( ndbMail )	
-			FormVersion = Left(curDesign, 5)
-			FormLanguage = Right(curDesign, 2)
-		
+			curDesign = getFormVersion ( ndbMail )
+			
+			If curDesign <> "" Then
+				FormVersion = Left(curDesign, Len(curDesign)-2)
+				FormLanguage = Right(curDesign, 2)
+			End If	
+			
 			If docSignature.MailVersion(0) <> "" And (version <> FormVersion Or language <> FormLanguage) Then
-				'design was refreshed while SigMan was active and had CalendarProfile locked!
+				'design was refreshed while SigMan was active and had CalendarProfile locked
+				'so e.g. => mail file version is 8.5.3, CalendarProfile form version is 8.5.2
 				Call WGCLI_LogEvent(logStart + " - CalendarProfile does not match mailfile version: " + FormVersion + " " + FormLanguage , 1, 0, Nothing)
 							
 				Call fixRefresh ( ndbMail )
 			End If
-		Else
+		ElseIf docDXL.Strategy(0) = "Template" Then	
 			Call WGCLI_LogEvent(logStart + " - Design Refresh Strategy" , 1, 3, Nothing)
+		Else
+			Call WGCLI_LogEvent(logStart + " - No Design Manipulation" , 1, 3, Nothing)
 		End If
 		
 		action = "push"
@@ -597,48 +607,45 @@ Sub launchProcess ( docSignature As NotesDocument, sesCurrent As NotesSession )
 	'update Calendar Profile content	
 	Call pushSignatureContent ( docSignature, sesCurrent, ndbMail )
 	
-	'check if further action (design) needed
-	Set frmCPBackup = ndbMail.Getform("CalendarProfile.backup")
-	
-	If (action = "push" And Not frmCPBackup Is Nothing) Then
-		'signature is active and backup exists => nothing to do
-		Call WGCLI_LogEvent(docSignature.Fullname(0) & ": signature is active and backup exists => nothing to do", 1, 3, docSignature)
-		GoTo getout
-	ElseIf (action = "reset" And frmCPBackup Is nothing) Then
-		'signature Is inactive and no backup found => nothing to do
-		Call WGCLI_LogEvent(docSignature.Fullname(0) & ": signature Is inactive and no backup found => nothing to do", 1, 3, docSignature)			
-		GoTo getout
-	End If
-	
-	'go ahead with design update
-	
-	'Set docDXL = zzzGetDesignUpdateDefinition ( docSignature.ParentDatabase )
-	'If docDXL Is Nothing Then
-	'	Exit Sub
-	'End If
-	
-	dbSize = ndbMail.Size/1024
-	dbQuota = ndbMail.SizeQuota * 0.95
-	
-	If docDXL.Strategy(0) = "DXL" Then
-		'check for mail file quota before pushing DXL
-		'we do not push DXL if size of Mail DB is less than 5% close to the quota		
-		If ndbMail.SizeQuota <> 0 And dbSize >= dbQuota Then	'db.Size => bytes db.SizeQuota => kilobytes ... veeeeery logic		
-			docSignature.transmit = "0"
-			docSignature.transmitReason = "Mail File exceeded quota"
-			Call WGCLI_LogEvent(docSignature.Fullname(0) & ": No DXL Update - Mail File exceeded quota" , 2, 0, docSignature)
-			Call docSignature.Save(True, False, True)
-			Exit Sub
+	If docDXL.Strategy(0) <> "None" Then
+		'check if further action (design) needed
+		Set frmCPBackup = ndbMail.Getform("CalendarProfile.backup")
+		
+		If (action = "push" And Not frmCPBackup Is Nothing) Then
+			'signature is active and backup exists => nothing to do
+			Call WGCLI_LogEvent(docSignature.Fullname(0) & ": signature is active and backup exists => nothing to do", 1, 3, docSignature)
+			GoTo getout
+		ElseIf (action = "reset" And frmCPBackup Is Nothing) Then
+			'signature Is inactive and no backup found => nothing to do
+			Call WGCLI_LogEvent(docSignature.Fullname(0) & ": signature Is inactive and no backup found => nothing to do", 1, 3, docSignature)			
+			GoTo getout
 		End If
 		
-		'Design manipulation using DXL => check for design modification
-		Call checkCalendarProfile ( docSignature, docDXL, ndbMail )		
-	ElseIf docDXL.Strategy(0) = "Template" Then		
-		'Design manipulation using Design Refresh
-		Call designRefresh ( docDXL, ndbMail )				
+		'go ahead with design update
+		
+		dbSize = ndbMail.Size/1024
+		dbQuota = ndbMail.SizeQuota * 0.95
+		
+		If docDXL.Strategy(0) = "DXL" Then
+			'check for mail file quota before pushing DXL
+			'we do not push DXL if size of Mail DB is less than 5% close to the quota		
+			If ndbMail.SizeQuota <> 0 And dbSize >= dbQuota Then	'db.Size => bytes db.SizeQuota => kilobytes		
+				docSignature.transmit = "0"
+				docSignature.transmitReason = "Mail File exceeded quota"
+				Call WGCLI_LogEvent(docSignature.Fullname(0) & ": No DXL Update - Mail File exceeded quota" , 2, 0, docSignature)
+				Call docSignature.Save(True, False, True)
+				Exit Sub
+			End If
+			
+			'Design manipulation using DXL => check for design modification
+			Call checkCalendarProfile ( docSignature, docDXL, ndbMail )		
+		ElseIf docDXL.Strategy(0) = "Template" Then		
+			'Design manipulation using Design Refresh
+			Call designRefresh ( docDXL, ndbMail )				
+		End If
 	End If
 
-	If action = "push" then
+	If action = "push" Then
 		docSignature.pushed = "1"
 		
 		docSignature.Strategy = docDXL.Strategy(0)
@@ -693,49 +700,12 @@ Private Sub designRefresh( docDXL As NotesDocument, ndbMail As NotesDatabase)
 	
 	Exit Sub
 ErrorHandler:
-	Call WGCLI_LogError("Error in designRefresh (" & CStr(Erl) & ")", nothing)
+	Call WGCLI_LogError("Error in designRefresh (" & CStr(Erl) & ")", Nothing)
 	Exit Sub
 End Sub
 
-'++LotusScript Development Environment:2:1:zzzGetVersionField:1:8
-Private Function zzzGetVersionField ( db As NotesDatabase ) As NotesDocument
-%REM 
-===============================================================
-Returns the notes note document that is the shared field design element (that tracks the version number)
-===============================================================
-%END REM
-	Dim nc As NotesNoteCollection
-	Dim doc As NotesDocument
-	Dim item As NotesItem
-	Dim strID As String
-	Dim booSharedField As Boolean
-	
-	booSharedField = False
-	Set nc = db.CreateNoteCollection ( False )
-	nc.SelectSharedFields = True
-	Call nc.BuildCollection
-	strID = nc.GetFirstNoteId
-	
-	Do Until strID = ""
-		Set doc = db.GetDocumentByID ( strID )		
-		Set item = doc.GetFirstItem ( "$Title" )
-		If item.Text = "$TemplateBuild" Then
-			booSharedField = True
-			Exit Do
-		End If
-		strID = nc.GetNextNoteId ( strID )
-	Loop
-	
-	If booSharedField Then
-		Set zzzGetVersionField = doc
-	Else
-		Set zzzGetVersionField = Nothing
-	End If
-	
-End Function
-
 '++LotusScript Development Environment:2:1:getFormVersion:1:8
-Private Function getFormVersion (ndbMail As NotesDatabase) As string
+Private Function getFormVersion (ndbMail As NotesDatabase) As String
 	On Error GoTo errorHandler
 	
 	Call WGCLI_LogEvent(logStart + " - start routine 'getFormVersion'" , 1, 3, Nothing)
@@ -769,7 +739,7 @@ Private Function getFormVersion (ndbMail As NotesDatabase) As string
 	Set nncCurrent = Nothing
 	
 	If docForm Is Nothing Then 
-		Exit function		'no form to manipulate found
+		Exit Function		'no form to manipulate found
 	End If
 	
 	'now we have the CalendarProfile Form
@@ -784,7 +754,7 @@ Private Function getFormVersion (ndbMail As NotesDatabase) As string
 	Set streamCurrent = sesCurrent.createStream()
 	strPath = sesCurrent.GetEnvironmentString("Directory", True) +  strSeparator +"checkCP.dxl" 
 	If Not (streamCurrent.Open(strPath)) Then
-		Exit function
+		Exit Function
 	End If
 	Call streamCurrent.Truncate
 	
@@ -825,8 +795,8 @@ Private Function getFormVersion (ndbMail As NotesDatabase) As string
 		Set nodeCurrent = ndList.Getitem(nCounter)
 		Set nodeElement = nodeCurrent
 		
-		getFormVersion = Right(nodeElement.Getattribute("comment"),7)
-		Exit for
+		getFormVersion = StrRight(nodeElement.Getattribute("comment"), ": ")
+		Exit For
 	Next
 	
 	
@@ -837,10 +807,47 @@ Private Function getFormVersion (ndbMail As NotesDatabase) As string
 	Kill strPath 
 	Kill strPath +".backup.dxl"
 	
-	Exit function
+	Exit Function
 ErrorHandler:
 	Call WGCLI_LogError("Error in getFormVersion (" & CStr(Erl) & ")", Nothing)
-	Exit function
+	Exit Function
+End Function
+
+'++LotusScript Development Environment:2:1:zzzGetVersionField:1:8
+Private Function zzzGetVersionField ( db As NotesDatabase ) As NotesDocument
+%REM 
+===============================================================
+Returns the notes note document that is the shared field design element (that tracks the version number)
+===============================================================
+%END REM
+	Dim nc As NotesNoteCollection
+	Dim doc As NotesDocument
+	Dim item As NotesItem
+	Dim strID As String
+	Dim booSharedField As Boolean
+	
+	booSharedField = False
+	Set nc = db.CreateNoteCollection ( False )
+	nc.SelectSharedFields = True
+	Call nc.BuildCollection
+	strID = nc.GetFirstNoteId
+	
+	Do Until strID = ""
+		Set doc = db.GetDocumentByID ( strID )		
+		Set item = doc.GetFirstItem ( "$Title" )
+		If item.Text = "$TemplateBuild" Then
+			booSharedField = True
+			Exit Do
+		End If
+		strID = nc.GetNextNoteId ( strID )
+	Loop
+	
+	If booSharedField Then
+		Set zzzGetVersionField = doc
+	Else
+		Set zzzGetVersionField = Nothing
+	End If
+	
 End Function
 
 '++LotusScript Development Environment:2:2:importNewForm:1:8

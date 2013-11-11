@@ -47,7 +47,7 @@ Public Class SignaturFactory
 		
 		Set docNext = m_viwAllFooter.Getfirstdocument()
 		While Not (docNext Is Nothing)
-			blActive = false
+			blActive = False
 			Set docProcess = docNext
 			Set docNext = m_viwAllFooter.Getnextdocument(docNext)
 			If (IsDate(docProcess.DDatum(0))) Then
@@ -55,11 +55,11 @@ Public Class SignaturFactory
 					blActive = True
 					If (IsDate(docProcess.DDatumEnd(0))) Then
 						If docProcess.DDatumEnd(0) < Today Then
-							blActive = false
+							blActive = False
 						End If
-					End if	
+					End If	
 				End If
-			End if
+			End If
 			If blActive And docProcess.isActiv(0) = "" Then
 				docProcess.isActiv = "1"
 				Call docProcess.save(True,False,True)
@@ -71,8 +71,8 @@ Public Class SignaturFactory
 					Set dcSignature = viwSignatures.getAllDocumentsByKey ( wert )
 					Call dcSignature.stampAll ( "ForceUpdate", "1")
 				End ForAll
-			End if	
-			If blActive = false And docProcess.isActiv(0) = "1" Then
+			End If	
+			If blActive = False And docProcess.isActiv(0) = "1" Then
 				docProcess.isActiv = ""
 				Call docProcess.save(True,False,True)
 				Call WGCLI_LogEvent( docProcess.Subject(0) & " deaktiviert", 0, 1, Nothing)
@@ -84,13 +84,13 @@ Public Class SignaturFactory
 					Call dcSignature.stampAll ( "ForceUpdate", "1")
 				End ForAll
 			End If
-		wend
+		Wend
 		
 	End Sub
 	
-	Public function updateSignatureFields ( docProfile  As NotesDocument ) As boolean
+	Public Function updateSignatureFields ( docProfile  As NotesDocument ) As Boolean
 		
-		updateSignatureFields = false
+		updateSignatureFields = False
 		
 		On Error GoTo errorhandling
 		
@@ -121,7 +121,7 @@ Public Class SignaturFactory
 		sOutput = exporter.Export (docTemp)
 		
 		'clean temporary document
-		call docTemp.RemovePermanently ( True )
+		Call docTemp.RemovePermanently ( True )
 		
 		'Step 3 Do the string manipulation
 		'special tags		
@@ -163,16 +163,16 @@ Public Class SignaturFactory
 		If docProfile.Disclaimer(0) = "1" Then
 			Dim dcAll As NotesDocumentCollection
 			Dim dcSchema As NotesDocumentCollection
-			Dim fieldnames(2) As string
-			Set dcAll = m_viwFooter.GetAllDocumentsByKey ( "**ALL**", true )
+			Dim fieldnames(2) As String
+			Set dcAll = m_viwFooter.GetAllDocumentsByKey ( "**ALL**", True )
 			Set dcSchema = m_viwFooter.GetAllDocumentsByKey ( docProfile.Template(0), True )
 			
-			If not (dcAll.Count = 0 And dcSchema.Count = 0) Then
+			If Not (dcAll.Count = 0 And dcSchema.Count = 0) Then
 				If dcAll.Count = 0 Then
 					Set dcAll = dcSchema
-				elseIf dcSchema.Count > 0 then
+				ElseIf dcSchema.Count > 0 Then
 					Call dcAll.Merge ( dcSchema )
-				End if
+				End If
 				'now sort by Position, then by title
 				'caution - the sorting is done text-style, so 1000 comes before 11!
 				fieldnames(0) = "Position"
@@ -188,7 +188,7 @@ Public Class SignaturFactory
 					End If
 					Set docFooter = dcAll.GetNextDocument ( docFooter ) 
 				Wend
-			End if
+			End If
 	
 		End If
 		rtitem2.Issigned = False
@@ -199,30 +199,30 @@ Public Class SignaturFactory
 		
 		updateSignatureFields = True
 		
-		Exit function
+		Exit Function
 errorhandling:
 		If importer.Log <> "" Then
-			Call WGCLI_LogError(importer.Log & Chr$(13) & Chr$(13) & sOutput, nothing)
+			Call WGCLI_LogError(importer.Log & Chr$(13) & Chr$(13) & sOutput, Nothing)
 			MsgBox "Signatur konnte nicht aktualisiert werden", 0+16, "Fehler bei " & docProfile.FullName(0)			
 		Else
 			MsgBox GetThreadInfo(1) & " -- Line: " & CStr(Erl) & " -- " & Error, 0+16, db.Title			
 		End If		
 		
-		Exit function
-	End function
+		Exit Function
+	End Function
 	
-	Public Function updateSignaturSchema( docSignatur As NotesDocument ) As boolean
+	Public Function updateSignaturSchema( docSignatur As NotesDocument ) As Boolean
 		Dim docSchema As NotesDocument
 		Dim rtiSignatur As NotesRichTextItem
 		Dim rtiTarget As NotesRichTextItem
-		updateSignaturSchema = false
+		updateSignaturSchema = False
 		Set docSchema = m_viwSchema.GetDocumentByKey ( docSignatur.Template(0), True )
 		
 		If Not docSchema Is Nothing Then
 			Set rtiSignatur = docSchema.getFirstItem( "Signature" )		'Vorlagesignatur
 		Else
 			Print "Schema " & docSignatur.Template(0) &" wurde nicht gefunden"
-			Exit function
+			Exit Function
 		End If
 		
 		'recreate SignaturEdit
@@ -235,7 +235,7 @@ errorhandling:
 		rtiTarget.Isprotected = False
 		rtiTarget.Issigned = False
 		
-		updateSignaturSchema = true
+		updateSignaturSchema = True
 	End Function
 	
 	Public Sub updateFromNAB( docCurrent As NotesDocument, docNAB As NotesDocument)
@@ -258,16 +258,16 @@ errorhandling:
 		
 		docCurrent.mailserver = docNab.MailServer(0)
 		docCurrent.mailfile = docNab.MailFile(0)
-		If docCurrent.Sprache(0) = "" then
+		If docCurrent.Sprache(0) = "" Then
 			If docNab.preferredLanguage(0) = "" Or Len(docNab.preferredLanguage(0)) <> 2 Then
 				docCurrent.Sprache = "DE"
 			Else
 				docCurrent.Sprache = UCase(docNab.preferredLanguage(0))
 			End If
-		End if
+		End If
 	End Sub
 	
-	Private Function replaceValues(sOutput As String, tag As String, newValue As string) As string
+	Private Function replaceValues(sOutput As String, tag As String, newValue As String) As String
 		
 		On Error GoTo errorhandling
 		
@@ -280,7 +280,7 @@ errorhandling:
 			sOutput = Replace(sOutput,tag , newValue)
 		Else
 			'tag value NOT available
-			'<break/> => Shift + Enter => TO AVOID WHEN CREATING SCHEMAS!!!
+			'<break/> => Shift + Enter => DO NOT USE WHEN CREATING SCHEMAS!!!
 			'<par def='x'> => Enter
 			Dim posStart As Long			
 			Dim posEnd As Long
@@ -325,17 +325,17 @@ errorhandling:
 		
 		replaceValues = sOutput	
 		
-		Exit function
+		Exit Function
 errorhandling:
 		MsgBox GetThreadInfo(1) & " -- Line: " & CStr(Erl)
 		
-		Exit function	
+		Exit Function	
 	End Function
 	
 	Private Sub checkUpdateNab (strFieldTarget As String, docTarget As NotesDocument, strValue As String)
 		If docTarget.hasItem("upd"+ strFieldTarget) Then
 			If (docTarget.Getitemvalue("upd"+strFieldTarget)(0) = "") Then
-				Exit sub
+				Exit Sub
 			End If
 		End If
 		Call docTarget.Replaceitemvalue(strFieldTarget, strValue)
@@ -357,7 +357,7 @@ errorhandling:
 		convertEntityRef = pstrValu$
 	End Function
 	
-	Private function checkField ( docProfile As NotesDocument, sOutput As String, tagDE As String, tagEN As String, fieldName As String, special As integer ) As string
+	Private Function checkField ( docProfile As NotesDocument, sOutput As String, tagDE As String, tagEN As String, fieldName As String, special As Integer ) As String
 		
 		Dim toReplace As String
 		
@@ -372,7 +372,7 @@ errorhandling:
 				sOutput = replaceValues(sOutput, toReplace, "$#" & convertEntityRef(docProfile.getItemValue(fieldName)(0)))
 			Else'standard tag
 				sOutput = Replace(sOutput, toReplace, "$#" & convertEntityRef(docProfile.getItemValue(fieldName)(0)))				
-			End if
+			End If
 		End If
 		
 		checkField = sOutput
